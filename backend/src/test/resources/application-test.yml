@@ -1,0 +1,4 @@
+erp:
+  demo:
+    seed-users: true
+    password: Test#Pass2026

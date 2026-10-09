@@ -1,0 +1,75 @@
+/*
+ * Design tokens dari prototipe UI ERP Manufaktur (PRD §15.1):
+ * netral & datar, garis 1px, warna kuat hanya untuk status dan aksen departemen.
+ */
+:root {
+  --bg: #F3F3F0;
+  --surface: #FFFFFF;
+  --surface-2: #FAFAF8;
+  --hover: #EFEFEB;
+  --hover-strong: #E8E8E3;
+  --line: #E1E1DB;
+  --line-soft: #EDEDE9;
+  --line-input: #D6D6D0;
+  --line-strong: #B9B9B2;
+  --text: #18181B;
+  --text-2: #3A3A37;
+  --text-3: #5A5A55;
+  --text-on-dark: #FFFFFF;
+  --accent: #18181B;
+  --accent-hover: #34343A;
+  --link: #1E40AF;
+  --focus: #1E40AF;
+  --danger: #B91C1C;
+  --shadow-pop: 0 10px 28px rgba(24, 24, 27, 0.10);
+
+  /* Status chip (PRD §15.5) */
+  --chip-draft-bg: #EDEDE9;      --chip-draft-fg: #3F3F3B;
+  --chip-submitted-bg: #E2EAFA;  --chip-submitted-fg: #1E3A8A;
+  --chip-approved-bg: #DCF0E4;   --chip-approved-fg: #14532D;
+  --chip-posted-bg: #27272A;     --chip-posted-fg: #FFFFFF;
+  --chip-rejected-bg: #FBE2E2;   --chip-rejected-fg: #8A1C1C;
+  --chip-running-bg: #E0F0F4;    --chip-running-fg: #155E75;
+  --chip-warn-bg: #FBEBC8;       --chip-warn-fg: #713F00;
+  --chip-hold-bg: #EDE4FA;       --chip-hold-fg: #5B21B6;
+
+  --row-h: 44px;
+  --radius: 6px;
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', monospace;
+  color-scheme: light;
+}
+
+:root[data-density="compact"] { --row-h: 32px; }
+
+:root[data-theme="dark"] {
+  --bg: #121214;
+  --surface: #1B1B1E;
+  --surface-2: #202024;
+  --hover: #2A2A2F;
+  --hover-strong: #323238;
+  --line: #2E2E33;
+  --line-soft: #26262A;
+  --line-input: #3A3A40;
+  --line-strong: #55555C;
+  --text: #EDEDEA;
+  --text-2: #CFCFCA;
+  --text-3: #A2A29C;
+  --accent: #EDEDEA;
+  --accent-hover: #FFFFFF;
+  --text-on-dark: #18181B;
+  --link: #93B4FF;
+  --focus: #93B4FF;
+  --danger: #F87171;
+  --shadow-pop: 0 10px 28px rgba(0, 0, 0, 0.45);
+
+  --chip-draft-bg: #2C2C30;      --chip-draft-fg: #D4D4CF;
+  --chip-submitted-bg: #1E2A4A;  --chip-submitted-fg: #B6C8FF;
+  --chip-approved-bg: #16331F;   --chip-approved-fg: #9BE0B0;
+  --chip-posted-bg: #EDEDEA;     --chip-posted-fg: #18181B;
+  --chip-rejected-bg: #401A1A;   --chip-rejected-fg: #FCA5A5;
+  --chip-running-bg: #143039;    --chip-running-fg: #9ADCEC;
+  --chip-warn-bg: #3D2E0D;       --chip-warn-fg: #F6D58A;
+  --chip-hold-bg: #2E2346;       --chip-hold-fg: #D3C2FB;
+  color-scheme: dark;
+}

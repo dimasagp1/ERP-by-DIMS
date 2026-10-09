@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: herbatech-erp
+  datasource:
+    url: jdbc:postgresql://localhost:5432/erp
+    username: erp
+    password: erp
+    hikari:
+      maximum-pool-size: 20
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+  flyway:
+    schemas: core,sys,hc,fin,scm,pre,prc
+    default-schema: core
+  modulith:
+    events:
+      jdbc:
+        schema-initialization:
+          enabled: true
+      republish-outstanding-events-on-restart: true
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 25MB
+  threads:
+    virtual:
+      enabled: true
+
+server:
+  port: ${SERVER_PORT:8081}
+  error:
+    include-message: always
+
+erp:
+  timezone: Asia/Jakarta
+  security:
+    # Kunci HMAC untuk token JWT. WAJIB diganti di produksi (min. 32 karakter).
+    jwt-secret: ${ERP_JWT_SECRET:dev-only-secret-change-me-0123456789abcdef}
+    token-ttl-hours: 10
+  files:
+    dir: ${ERP_FILES_DIR:./data/files}
+
+springdoc:
+  api-docs:
+    path: /api/openapi
+  swagger-ui:
+    path: /api/swagger
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,modulith

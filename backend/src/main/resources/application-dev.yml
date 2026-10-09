@@ -1,0 +1,9 @@
+# Profil pengembangan: membuat pengguna demo saat database masih kosong.
+erp:
+  demo:
+    seed-users: true
+    # Kata sandi semua pengguna demo (hanya untuk lingkungan lokal).
+    password: Demo#2026
+logging:
+  level:
+    id.herbatech.erp: DEBUG
