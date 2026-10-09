@@ -614,7 +614,9 @@ export function StockCardPage() {
   const [lot, setLot] = useState<number | null>(null);
   const stock = useQuery({ queryKey: ['stock', itemId, warehouseId], queryFn: () => api.get<Row[]>('/scm/stock', { itemId, warehouseId }) });
   const moves = useQuery({ queryKey: ['moves', itemId, lot], queryFn: () => api.get<Row[]>('/scm/moves', { itemId, lotId: lot }), enabled: itemId != null || lot != null });
-  const total = (stock.data ?? []).reduce((s, r) => s + n(r.qty) * n(r.unitCost), 0);
+  const stockRows: Row[] = (Array.isArray(stock.data) ? stock.data : (stock.data as any)?.content) ?? [];
+  const movesRows: Row[] = (Array.isArray(moves.data) ? moves.data : (moves.data as any)?.content) ?? [];
+  const total = stockRows.reduce((s: number, r: Row) => s + n(r.qty) * n(r.unitCost), 0);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div className="card" style={{ overflow: 'hidden' }}>
@@ -624,11 +626,11 @@ export function StockCardPage() {
           <span className="spacer" />
           <span>Nilai <b className="mono">{fmtRp(total)}</b></span>
           <button className="btn" type="button" onClick={() => exportCsv(`stok-${todayIso()}.csv`, ['Item', 'Lot', 'Status', 'ED', 'Gudang', 'Bin', 'Qty', 'Biaya'],
-            (stock.data ?? []).map((r) => [r.itemCode as string, r.lotNo as string, r.qcStatus as string, r.expDate as string, r.warehouse as string, r.binCode as string, n(r.qty), n(r.unitCost)]))}>
+            stockRows.map((r) => [r.itemCode as string, r.lotNo as string, r.qcStatus as string, r.expDate as string, r.warehouse as string, r.binCode as string, n(r.qty), n(r.unitCost)]))}>
             <Icon name="download" size={14} />Ekspor</button>
         </div>
         <Err e={stock.error} />
-        <DataTable rows={stock.data ?? []} rowKey={(r) => `${r.itemId}-${r.lotId}-${r.locationId}`} onRowClick={(r) => { setItemId(r.itemId as number); setLot(r.lotId as number | null); }}
+        <DataTable rows={stockRows} rowKey={(r) => `${r.itemId}-${r.lotId}-${r.locationId}`} onRowClick={(r) => { setItemId(r.itemId as number); setLot(r.lotId as number | null); }}
           empty={stock.isLoading ? 'Memuat…' : 'Tidak ada stok'}
           columns={[
             { key: 'item', label: 'Item', render: (r) => <span><span className="mono small">{String(r.itemCode)}</span> {String(r.itemName)}</span> },
@@ -644,7 +646,7 @@ export function StockCardPage() {
       {(itemId != null || lot != null) && (
         <div className="card" style={{ overflow: 'hidden' }}>
           <div className="card-h">Kartu stok {lot ? '(lot terpilih)' : '(item)'} <span className="small muted" style={{ fontWeight: 400 }}>1.000 gerak terakhir</span></div>
-          <DataTable rows={moves.data ?? []} rowKey={(r) => String(r.id)} empty="Belum ada gerak"
+          <DataTable rows={movesRows} rowKey={(r) => String(r.id)} empty="Belum ada gerak"
             columns={[
               { key: 'moveDate', label: 'Tanggal', render: (r) => fmtDate(r.moveDate as string) },
               { key: 'moveType', label: 'Gerak', mono: true },

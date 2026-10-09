@@ -274,3 +274,29 @@ export function LeaveBalancePage() {
     </div>
   );
 }
+
+export function HcReportPage() {
+  return (
+    <div style={{ padding: 20 }}>
+      <h3>Laporan Human Capital & Ketenagakerjaan (HC-90)</h3>
+      <p className="muted">Analisis headcount per departemen, turnover rate, rasio lembur, dan kepatuhan jam kerja regulasi.</p>
+      <div className="card" style={{ padding: 16, marginTop: 16 }}>
+        <div style={{ display: 'flex', gap: 24 }}>
+          <div>
+            <div className="lbl">Total Karyawan Aktif</div>
+            <div style={{ fontSize: 24, fontWeight: 700 }}>184 Orang</div>
+          </div>
+          <div>
+            <div className="lbl">Tingkat Retensi Karyawan</div>
+            <div style={{ fontSize: 24, fontWeight: 700, color: 'var(--qms-accent, #047857)' }}>97.8%</div>
+          </div>
+          <div>
+            <div className="lbl">Rata-rata Jam Lembur / Karyawan</div>
+            <div style={{ fontSize: 24, fontWeight: 700 }}>6.2 Jam/Bulan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+

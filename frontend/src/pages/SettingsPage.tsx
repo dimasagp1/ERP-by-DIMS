@@ -9,6 +9,9 @@ import { errorText, useToast } from '../components/ui';
 import { fmtRp } from '../lib/format';
 import { menuPath, useApps } from '../lib/meta';
 import { MASTER_MENUS } from '../modules/master/configs';
+import { ManageUsersModal } from '../components/ManageUsersModal';
+import { TotpSecurityModal } from '../components/TotpSecurityModal';
+import { DataMigrationModal } from '../modules/master/DataMigrationModal';
 
 interface DocType { id: number; code: string; name: string; prefix: string; resetPeriod: string; menuCode: string; requiresEsign: boolean }
 interface Rule { id: number; docTypeCode: string; level: number; minAmount: number; label: string; approverType: string }
@@ -20,11 +23,26 @@ interface AppSettings {
   canEdit: boolean;
 }
 
-const CATS = [['umum', 'Umum'], ['nomor', 'Penomoran dokumen'], ['approval', 'Matriks approval'], ['master', 'Master khusus'],
-  ['notif', 'Notifikasi'], ['akses', 'Hak akses aplikasi'], ['pref', 'Preferensi saya'], ['password', 'Kata sandi']] as const;
+const CATS = [
+  ['umum', 'Umum'],
+  ['nomor', 'Penomoran dokumen'],
+  ['approval', 'Matriks approval'],
+  ['master', 'Master khusus'],
+  ['notif', 'Notifikasi'],
+  ['akses', 'Hak akses aplikasi'],
+  ['users', 'Kelola Pengguna (Users)'],
+  ['migrasi', 'Migrasi Data Awal (Go-Live)'],
+  ['pref', 'Preferensi saya'],
+  ['password', 'Kata sandi'],
+] as const;
 const SCOPE: Record<string, string> = { OWN: 'Milik sendiri', SECTION: 'Seksi', DEPARTMENT: 'Departemen', ALL: 'Semua' };
-const NOTIF = [['approval', 'Dokumen menunggu approval saya'], ['deadline', 'Tenggat tinggal 3 hari'], ['rejected', 'Dokumen saya ditolak atau dikembalikan'],
-  ['digest', 'Ringkasan harian lewat email pukul 07.00'], ['escalation', 'Eskalasi bila approval > 4 hari kerja']];
+const NOTIF = [
+  ['approval', 'Dokumen menunggu approval saya'],
+  ['deadline', 'Tenggat tinggal 3 hari'],
+  ['rejected', 'Dokumen saya ditolak atau dikembalikan'],
+  ['digest', 'Ringkasan harian lewat email pukul 07.00'],
+  ['escalation', 'Eskalasi bila approval > 4 hari kerja'],
+];
 
 /** Pengaturan aplikasi (gear, PRD §15.4) + preferensi pengguna. */
 export function SettingsPage() {
@@ -38,14 +56,21 @@ export function SettingsPage() {
   return (
     <div className="page">
       <div>
-        <div className="crumb">{cur.name} / Pengaturan</div>
+        <div className="crumb">{cur.name} / Pengaturan Modul</div>
         <h1 style={{ marginTop: 4 }}>Pengaturan {cur.shortName}</h1>
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, alignItems: 'flex-start' }}>
         <div style={{ flex: '1 1 220px', maxWidth: 260, display: 'flex', flexDirection: 'column', gap: 2 }}>
           {CATS.map(([k, label]) => (
-            <button key={k} type="button" className={`catbtn${cat === k ? ' on' : ''}`} style={cat === k ? { boxShadow: `inset 2px 0 0 ${cur.color}` } : undefined}
-              onClick={() => setParams({ cat: k })}>{k === 'master' ? `Master khusus ${cur.shortName}` : label}</button>
+            <button
+              key={k}
+              type="button"
+              className={`catbtn${cat === k ? ' on' : ''}`}
+              style={cat === k ? { boxShadow: `inset 2px 0 0 ${cur.color}` } : undefined}
+              onClick={() => setParams({ cat: k })}
+            >
+              {k === 'master' ? `Master khusus ${cur.shortName}` : label}
+            </button>
           ))}
         </div>
         <div className="card" style={{ flex: '999 1 520px', minWidth: 0, padding: '20px 24px' }}>
@@ -56,6 +81,8 @@ export function SettingsPage() {
           {cat === 'master' && <Masters app={app} masters={cur.masters} />}
           {cat === 'notif' && <Notifications />}
           {cat === 'akses' && q.data && <Access data={q.data} />}
+          {cat === 'users' && <UsersSettingsSection />}
+          {cat === 'migrasi' && <MigrationSettingsSection />}
           {cat === 'pref' && <Prefs />}
           {cat === 'password' && <ChangePassword />}
         </div>
@@ -206,6 +233,62 @@ function Access({ data }: { data: AppSettings }) {
   );
 }
 
+function UsersSettingsSection() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const nav = useNavigate();
+  return (
+    <>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <div>
+          <h2>Manajemen Pengguna (Manage Users)</h2>
+          <p className="small muted" style={{ margin: '4px 0 0' }}>
+            Kelola akun karyawan, peran (roles), izin akses per modul, dan kata sandi.
+          </p>
+        </div>
+        <button
+          type="button"
+          className="btn btn-dark"
+          onClick={() => setModalOpen(true)}
+          style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+          </svg>
+          Buka Kelola Pengguna
+        </button>
+      </div>
+
+      <div
+        style={{
+          background: 'var(--surface-2)',
+          padding: 20,
+          borderRadius: 8,
+          border: '1px solid var(--line-soft)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 12,
+        }}
+      >
+        <div style={{ fontWeight: 600 }}>Tindakan Cepat Pengguna:</div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+          <button type="button" className="btn" onClick={() => setModalOpen(true)}>
+            + Tambah Pengguna Baru
+          </button>
+          <button type="button" className="btn" onClick={() => setModalOpen(true)}>
+            Reset Password Karyawan
+          </button>
+          <button type="button" className="btn" onClick={() => nav(menuPath('SYS-03'))}>
+            Buka Tabel Master SYS-03 (Users & Roles)
+          </button>
+        </div>
+      </div>
+
+      <ManageUsersModal open={modalOpen} onClose={() => setModalOpen(false)} />
+    </>
+  );
+}
+
 function Prefs() {
   const { me, savePreferences } = useAuth();
   const toast = useToast();
@@ -215,6 +298,10 @@ function Prefs() {
   const save = async () => {
     try {
       await savePreferences(p);
+      if (p.theme === 'dark' || p.theme === 'light') {
+        document.documentElement.dataset.theme = p.theme;
+        localStorage.setItem('erp.theme', p.theme);
+      }
       toast.ok('Preferensi disimpan');
     } catch (e) {
       toast.error(e);
@@ -228,7 +315,14 @@ function Prefs() {
           <select value={p.locale} onChange={(e) => setP({ ...p, locale: e.target.value as Preferences['locale'] })}><option value="id">Bahasa Indonesia</option><option value="en">English</option></select>
         </label>
         <label className="field"><span>Tema</span>
-          <select value={p.theme} onChange={(e) => setP({ ...p, theme: e.target.value as Preferences['theme'] })}><option value="light">Terang</option><option value="dark">Gelap</option><option value="system">Ikuti sistem</option></select>
+          <select value={p.theme} onChange={(e) => {
+            const next = e.target.value as Preferences['theme'];
+            setP({ ...p, theme: next });
+            if (next === 'dark' || next === 'light') {
+              document.documentElement.dataset.theme = next;
+              localStorage.setItem('erp.theme', next);
+            }
+          }}><option value="light">Terang</option><option value="dark">Gelap</option><option value="system">Ikuti sistem</option></select>
         </label>
         <label className="field"><span>Kepadatan tabel</span>
           <select value={p.density} onChange={(e) => setP({ ...p, density: e.target.value as Preferences['density'] })}><option value="comfortable">Nyaman (44 px)</option><option value="compact">Padat (32 px)</option></select>
@@ -253,6 +347,7 @@ function ChangePassword() {
   const [newPassword, setNew] = useState('');
   const [confirm, setConfirm] = useState('');
   const [err, setErr] = useState<string | null>(null);
+  const [totpOpen, setTotpOpen] = useState(false);
   const toast = useToast();
   const save = async () => {
     if (newPassword !== confirm) return setErr('Konfirmasi kata sandi tidak sama');
@@ -266,14 +361,99 @@ function ChangePassword() {
   };
   return (
     <>
-      <h2 style={{ marginBottom: 16 }}>Ganti kata sandi</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 14, maxWidth: 360 }}>
+      <h2 style={{ marginBottom: 16 }}>Ganti kata sandi & Keamanan Akun</h2>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 14, maxWidth: 440 }}>
         <label className="field"><span>Kata sandi lama</span><input type="password" autoComplete="current-password" value={oldPassword} onChange={(e) => setOld(e.target.value)} /></label>
         <label className="field"><span>Kata sandi baru (min. 8 karakter)</span><input type="password" autoComplete="new-password" value={newPassword} onChange={(e) => setNew(e.target.value)} /></label>
         <label className="field"><span>Ulangi kata sandi baru</span><input type="password" autoComplete="new-password" value={confirm} onChange={(e) => setConfirm(e.target.value)} /></label>
         {err && <div className="alert alert-err">{err}</div>}
-        <div><button className="btn btn-dark" type="button" onClick={save}>Simpan</button></div>
+        <div><button className="btn btn-dark" type="button" onClick={save}>Simpan Kata Sandi</button></div>
+
+        <div style={{ borderTop: '1px solid var(--line-soft)', marginTop: 12, paddingTop: 16 }}>
+          <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 4 }}>Autentikasi Dua Faktor (2FA / TOTP)</div>
+          <p className="small muted" style={{ margin: '0 0 10px' }}>
+            Wajib untuk Approver Dokumen Berjenjang & Verifikator Keuangan (PRD §17).
+          </p>
+          <button
+            type="button"
+            className="btn"
+            onClick={() => setTotpOpen(true)}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+          >
+            <span>🔐</span> Kelola Autentikasi 2FA
+          </button>
+        </div>
       </div>
+
+      <TotpSecurityModal open={totpOpen} onClose={() => setTotpOpen(false)} />
     </>
   );
 }
+
+function MigrationSettingsSection() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const templates = [
+    { title: 'Saldo Awal GL & Buku Besar', file: 'template_migrasi_saldo_awal_gl.csv', mod: 'FIN', desc: 'Neraca cut-off, kas/bank, piutang, hutang' },
+    { title: 'Saldo Stok per Lot & Lokasi', file: 'template_migrasi_saldo_stok_lot.csv', mod: 'SCM', desc: 'Opname fisik lot/batch simplisia, ekstrak, FG' },
+    { title: 'Master Karyawan & Penugasan', file: 'template_migrasi_karyawan.csv', mod: 'HC', desc: 'NIK, jabatan, departemen, plant, gaji pokok' },
+    { title: 'Master Item Simplisia & Produk', file: 'template_migrasi_master_item.csv', mod: 'SYS', desc: 'Kode bahan, kategori, spesifikasi, izin edar' },
+  ];
+
+  return (
+    <>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
+        <div>
+          <h2>Migrasi Data Awal (Go-Live Cutover)</h2>
+          <p className="small muted" style={{ margin: '4px 0 0' }}>
+            Alat bantu impor data saldo awal, master data batch/lot, dan cutover operasional sesuai kaidah GMP & ALCOA+.
+          </p>
+        </div>
+        <button
+          type="button"
+          className="btn btn-dark"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 8, whiteSpace: 'nowrap' }}
+          onClick={() => setModalOpen(true)}
+        >
+          <span>📥</span> Buka Importer Data
+        </button>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 14, marginBottom: 24 }}>
+        {templates.map((t) => (
+          <div key={t.file} style={{ border: '1px solid var(--line)', borderRadius: 8, padding: 14, background: 'var(--surface-sunken)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+              <span style={{ fontWeight: 600, fontSize: 13 }}>{t.title}</span>
+              <span className="badge" style={{ fontSize: 11 }}>{t.mod}</span>
+            </div>
+            <p className="small muted" style={{ margin: '0 0 10px', minHeight: 34 }}>{t.desc}</p>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <a
+                href={`/templates/${t.file}`}
+                download
+                className="btn btn-sm"
+                style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}
+              >
+                <span>💾</span> Unduh CSV
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ borderTop: '1px solid var(--line-soft)', paddingTop: 16 }}>
+        <h3 style={{ fontSize: 15, marginBottom: 10 }}>Checklist Kesiapan Cutover Go-Live</h3>
+        <ul style={{ paddingLeft: 20, margin: 0, fontSize: 13, lineHeight: 1.8, color: 'var(--ink-secondary)' }}>
+          <li><strong>Tanggal Cut-off Resmi:</strong> Seluruh transaksi di sistem legacy dibekukan pada tanggal H-1 Cutover.</li>
+          <li><strong>Stock Opname Fisik Bersama:</strong> SCM, Gudang, dan QA menandatangani Berita Acara Opname Lot & Karantina.</li>
+          <li><strong>Verifikasi Neraca Saldo GL:</strong> Akun debet/kredit balance 100% dan telah disahkan oleh Finance Manager.</li>
+          <li><strong>Integritas Data (ALCOA+):</strong> Setiap baris impor tercatat dalam Audit Trail dengan identitas operator pengunggah.</li>
+          <li><strong>Uji Kualifikasi (IQ/OQ):</strong> Protokol validasi sistem terkomputerisasi telah disetujui tim QA.</li>
+        </ul>
+      </div>
+
+      <DataMigrationModal open={modalOpen} onClose={() => setModalOpen(false)} />
+    </>
+  );
+}
+

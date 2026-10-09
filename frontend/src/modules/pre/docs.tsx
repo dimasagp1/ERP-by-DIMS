@@ -131,3 +131,184 @@ export const materialReturnDoc: DocConfig = {
   }],
   summary: [{ key: 'returnedValue', label: 'Nilai diterima gudang', type: 'money' }],
 };
+
+// ---------------------------------------------------------------- PRE Phase 3: eBMR, Dispensing, IPC, Maintenance
+
+export const batchRecordDoc: DocConfig = {
+  docType: 'BMR',
+  title: 'Batch Record Elektronik (eBMR)',
+  endpoint: '/pre/batch-records',
+  subtitle: (d) => (d.batchNo ? `Batch ${d.batchNo} · ${d.stageName}` : undefined),
+  listColumns: [
+    DOCNO_COL,
+    { key: 'batchNo', label: 'Nomor Batch', mono: true },
+    { key: 'stageName', label: 'Tahapan Proses' },
+    STATUS_COL,
+  ],
+  header: [
+    { key: 'woId', label: 'Work Order', type: 'lookup', lookup: 'work-orders', required: true },
+    { key: 'batchNo', label: 'Nomor Batch', required: true },
+    { key: 'stageName', label: 'Tahap Proses (mis. Ekstraksi, Pengayakan, Mixing, Kapsulasi)', required: true },
+    { key: 'operatorId', label: 'Operator Pelaksana', type: 'lookup', lookup: 'employees' },
+    { key: 'checkerId', label: 'Pemeriksa / In-Process QA', type: 'lookup', lookup: 'employees' },
+    { key: 'startTime', label: 'Waktu Mulai', type: 'date' },
+    { key: 'endTime', label: 'Waktu Selesai', type: 'date' },
+    { key: 'notes', label: 'Catatan & Observasi Proses', type: 'textarea' },
+  ],
+};
+
+export const dispensingDoc: DocConfig = {
+  docType: 'DSP',
+  title: 'Penimbangan & Dispensing',
+  endpoint: '/pre/dispensings',
+  listColumns: [
+    DOCNO_COL,
+    { key: 'targetQty', label: 'Target', type: 'number' },
+    { key: 'actualQty', label: 'Aktual', type: 'number' },
+    STATUS_COL,
+  ],
+  header: [
+    { key: 'woId', label: 'Work Order', type: 'lookup', lookup: 'work-orders', required: true },
+    { key: 'itemId', label: 'Bahan Baku', type: 'lookup', lookup: 'items', required: true },
+    { key: 'lotId', label: 'Lot Released', type: 'lookup', lookup: 'lots', required: true },
+    { key: 'targetQty', label: 'Jumlah Target Formula', type: 'number', required: true },
+    { key: 'actualQty', label: 'Hasil Timbang Aktual', type: 'number', required: true },
+    { key: 'barcodeScanned', label: 'Barcode Lot Terverifikasi' },
+    { key: 'weighedBy', label: 'Petugas Timbang', type: 'lookup', lookup: 'employees' },
+    { key: 'verifiedBy', label: 'Verifikator (Dual Sign)', type: 'lookup', lookup: 'employees' },
+  ],
+};
+
+export const ipcEntryDoc: DocConfig = {
+  docType: 'IPC',
+  title: 'In-Process Control (IPC)',
+  endpoint: '/pre/ipc-entries',
+  listColumns: [
+    DOCNO_COL,
+    { key: 'stageName', label: 'Tahap' },
+    { key: 'paramName', label: 'Parameter' },
+    { key: 'measuredVal', label: 'Hasil Ukur' },
+    STATUS_COL,
+  ],
+  header: [
+    { key: 'woId', label: 'Work Order', type: 'lookup', lookup: 'work-orders', required: true },
+    { key: 'stageName', label: 'Tahapan Proses', required: true },
+    { key: 'paramName', label: 'Parameter Uji (mis. Kadar Air, pH, Viskositas, Bobot Rata-rata)', required: true },
+    { key: 'targetVal', label: 'Rentang Standar' },
+    { key: 'measuredVal', label: 'Hasil Pengukuran', required: true },
+    { key: 'operatorId', label: 'Petugas IPC', type: 'lookup', lookup: 'employees' },
+  ],
+};
+
+export const downtimeDoc: DocConfig = {
+  docType: 'DT',
+  title: 'Downtime & Kendala Lini',
+  endpoint: '/pre/downtimes',
+  listColumns: [
+    DOCNO_COL,
+    { key: 'machineName', label: 'Mesin' },
+    { key: 'reasonCategory', label: 'Penyebab' },
+    { key: 'durationMin', label: 'Durasi (Menit)', type: 'number' },
+    STATUS_COL,
+  ],
+  header: [
+    { key: 'lineId', label: 'Lini Produksi', type: 'lookup', lookup: 'lines', required: true },
+    { key: 'woId', label: 'Work Order Terdampak', type: 'lookup', lookup: 'work-orders' },
+    { key: 'machineName', label: 'Nama Mesin / Peralatan' },
+    { key: 'reasonCategory', label: 'Kategori Downtime', type: 'select', options: [
+      { value: 'BREAKDOWN', label: 'Kerusakan Mesin (Breakdown)' },
+      { value: 'CHANGEOVER', label: 'Changeover / Bersih Lini' },
+      { value: 'WAIT_MATERIAL', label: 'Menunggu Bahan / Kemasan' },
+      { value: 'UTILITY_OFF', label: 'Gangguan Utilitas (Listrik/Steam)' },
+    ], required: true },
+    { key: 'durationMin', label: 'Durasi Henti (Menit)', type: 'number' },
+    { key: 'actionTaken', label: 'Tindakan Penanganan', type: 'textarea' },
+  ],
+};
+
+export const lineClearanceDoc: DocConfig = {
+  docType: 'LCL',
+  title: 'Line Clearance',
+  endpoint: '/pre/line-clearances',
+  listColumns: [
+    DOCNO_COL,
+    { key: 'statusResult', label: 'Hasil Verifikasi' },
+    STATUS_COL,
+  ],
+  header: [
+    { key: 'lineId', label: 'Lini Produksi', type: 'lookup', lookup: 'lines', required: true },
+    { key: 'woId', label: 'Work Order yang Akan Mulai', type: 'lookup', lookup: 'work-orders', required: true },
+    { key: 'checkedBy', label: 'Petugas Produksi', type: 'lookup', lookup: 'employees' },
+    { key: 'qaInspectorId', label: 'Inspector QA', type: 'lookup', lookup: 'employees' },
+    { key: 'statusResult', label: 'Keputusan Line Clearance', type: 'select', options: [
+      { value: 'PASS', label: 'Lolos (Lini Siap Digunakan)' },
+      { value: 'FAIL', label: 'Belum Lolos (Perlu Pembersihan Ulang)' },
+    ], required: true },
+  ],
+};
+
+export const workRequestDoc: DocConfig = {
+  docType: 'WRQ',
+  title: 'Work Request Kerusakan',
+  endpoint: '/pre/work-requests',
+  listColumns: [
+    DOCNO_COL,
+    { key: 'priority', label: 'Prioritas' },
+    { key: 'description', label: 'Kerusakan' },
+    STATUS_COL,
+  ],
+  header: [
+    { key: 'machineId', label: 'Mesin / Peralatan', type: 'lookup', lookup: 'machines' },
+    { key: 'requesterId', label: 'Pelapor', type: 'lookup', lookup: 'employees', required: true },
+    { key: 'priority', label: 'Tingkat Urgensi', type: 'select', options: [
+      { value: 'LOW', label: 'Rendah' },
+      { value: 'NORMAL', label: 'Normal' },
+      { value: 'HIGH', label: 'Tinggi (Lini Terhenti)' },
+    ], required: true },
+    { key: 'description', label: 'Deskripsi Gejala Kerusakan', type: 'textarea', required: true },
+  ],
+};
+
+export const maintenanceOrderDoc: DocConfig = {
+  docType: 'MNT',
+  title: 'Work Order Maintenance',
+  endpoint: '/pre/maintenance-orders',
+  listColumns: [
+    DOCNO_COL,
+    { key: 'maintenanceType', label: 'Jenis' },
+    { key: 'costAmount', label: 'Biaya', type: 'money' },
+    STATUS_COL,
+  ],
+  header: [
+    { key: 'machineId', label: 'Mesin', type: 'lookup', lookup: 'machines', required: true },
+    { key: 'maintenanceType', label: 'Jenis Maintenance', type: 'select', options: [
+      { value: 'CORRECTIVE', label: 'Perbaikan Korektif (Breakdown)' },
+      { value: 'PREVENTIVE', label: 'Perawatan Berkala (PM)' },
+    ], required: true },
+    { key: 'technicianId', label: 'Teknisi Pelaksana', type: 'lookup', lookup: 'employees' },
+    { key: 'costAmount', label: 'Biaya Perbaikan / Jasa (Rp)', type: 'money' },
+    { key: 'causeAnalysis', label: 'Analisis Penyebab (Root Cause)', type: 'textarea' },
+    { key: 'sparepartUsedJson', label: 'Sparepart & Komponen Terpakai', type: 'textarea' },
+  ],
+};
+
+export const calibrationDoc: DocConfig = {
+  docType: 'CAL',
+  title: 'Kalibrasi & Kualifikasi',
+  endpoint: '/pre/calibrations',
+  listColumns: [
+    DOCNO_COL,
+    { key: 'certNo', label: 'No. Sertifikat' },
+    { key: 'calibrationDate', label: 'Tgl Kalibrasi', type: 'date' },
+    { key: 'nextDueDate', label: 'Jatuh Tempo', type: 'date' },
+    STATUS_COL,
+  ],
+  header: [
+    { key: 'machineId', label: 'Instrumen / Timbangan / Mesin', type: 'lookup', lookup: 'machines', required: true },
+    { key: 'certNo', label: 'Nomor Sertifikat Kalibrasi' },
+    { key: 'calibrationDate', label: 'Tanggal Kalibrasi', type: 'date', required: true },
+    { key: 'nextDueDate', label: 'Jadwal Kalibrasi Berikutnya', type: 'date', required: true },
+    { key: 'certFileUrl', label: 'Tautan File Sertifikat PDF' },
+  ],
+};
+

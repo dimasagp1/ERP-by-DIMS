@@ -33,6 +33,19 @@
   --chip-warn-bg: #FBEBC8;       --chip-warn-fg: #713F00;
   --chip-hold-bg: #EDE4FA;       --chip-hold-fg: #5B21B6;
 
+  /* Launcher & App Layout tokens (Odoo style) */
+  --launcher-bg: linear-gradient(135deg, #ede7f6 0%, #f3edf8 35%, #e9e3f5 70%, #ded6f0 100%);
+  --launcher-banner-bg: #e0f2fe;
+  --launcher-banner-border: #bae6fd;
+  --launcher-banner-fg: #0369a1;
+  --launcher-card-bg: #FFFFFF;
+  --launcher-card-border: rgba(0, 0, 0, 0.06);
+  --launcher-card-shadow: 0 10px 25px -5px rgba(100, 80, 160, 0.12), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+  --launcher-card-hover: 0 16px 32px -6px rgba(100, 80, 160, 0.22), 0 6px 14px -3px rgba(0, 0, 0, 0.06);
+
+  --search-pill-bg: #e2e8f0;
+  --search-pill-fg: #334155;
+
   --row-h: 44px;
   --radius: 6px;
   --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -43,33 +56,47 @@
 :root[data-density="compact"] { --row-h: 32px; }
 
 :root[data-theme="dark"] {
-  --bg: #121214;
-  --surface: #1B1B1E;
-  --surface-2: #202024;
-  --hover: #2A2A2F;
-  --hover-strong: #323238;
-  --line: #2E2E33;
-  --line-soft: #26262A;
-  --line-input: #3A3A40;
-  --line-strong: #55555C;
-  --text: #EDEDEA;
-  --text-2: #CFCFCA;
-  --text-3: #A2A29C;
-  --accent: #EDEDEA;
+  --bg: #0f1117;
+  --surface: #181b24;
+  --surface-2: #1e222e;
+  --hover: #262b3a;
+  --hover-strong: #30374a;
+  --line: #292e3e;
+  --line-soft: #202432;
+  --line-input: #383f54;
+  --line-strong: #5a6482;
+  --text: #f1f3f9;
+  --text-2: #cdd3e2;
+  --text-3: #949eb5;
+  --accent: #f1f3f9;
   --accent-hover: #FFFFFF;
-  --text-on-dark: #18181B;
-  --link: #93B4FF;
-  --focus: #93B4FF;
-  --danger: #F87171;
-  --shadow-pop: 0 10px 28px rgba(0, 0, 0, 0.45);
+  --text-on-dark: #0f1117;
+  --link: #93c5fd;
+  --focus: #60a5fa;
+  --danger: #f87171;
+  --shadow-pop: 0 14px 34px rgba(0, 0, 0, 0.65);
 
-  --chip-draft-bg: #2C2C30;      --chip-draft-fg: #D4D4CF;
-  --chip-submitted-bg: #1E2A4A;  --chip-submitted-fg: #B6C8FF;
-  --chip-approved-bg: #16331F;   --chip-approved-fg: #9BE0B0;
-  --chip-posted-bg: #EDEDEA;     --chip-posted-fg: #18181B;
-  --chip-rejected-bg: #401A1A;   --chip-rejected-fg: #FCA5A5;
-  --chip-running-bg: #143039;    --chip-running-fg: #9ADCEC;
-  --chip-warn-bg: #3D2E0D;       --chip-warn-fg: #F6D58A;
-  --chip-hold-bg: #2E2346;       --chip-hold-fg: #D3C2FB;
+  --chip-draft-bg: #262b3a;      --chip-draft-fg: #cdd3e2;
+  --chip-submitted-bg: #1e2e4a;  --chip-submitted-fg: #93c5fd;
+  --chip-approved-bg: #143522;   --chip-approved-fg: #86efac;
+  --chip-posted-bg: #f1f3f9;     --chip-posted-fg: #0f1117;
+  --chip-rejected-bg: #451b1f;   --chip-rejected-fg: #fca5a5;
+  --chip-running-bg: #163644;    --chip-running-fg: #7dd3fc;
+  --chip-warn-bg: #423214;       --chip-warn-fg: #fde047;
+  --chip-hold-bg: #32224d;       --chip-hold-fg: #d8b4fe;
+
+  /* Launcher & App Layout dark tokens */
+  --launcher-bg: linear-gradient(135deg, #13141f 0%, #1a1a29 40%, #141322 75%, #0d0d17 100%);
+  --launcher-banner-bg: #0c2d3d;
+  --launcher-banner-border: #164e63;
+  --launcher-banner-fg: #38bdf8;
+  --launcher-card-bg: #202230;
+  --launcher-card-border: rgba(255, 255, 255, 0.08);
+  --launcher-card-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.55), 0 4px 10px rgba(0, 0, 0, 0.35);
+  --launcher-card-hover: 0 18px 36px -6px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.15);
+
+  --search-pill-bg: #2a3144;
+  --search-pill-fg: #93c5fd;
+
   color-scheme: dark;
 }

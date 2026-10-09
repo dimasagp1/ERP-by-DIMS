@@ -124,12 +124,18 @@ export function DocumentSidePanel({ docType, id, panel }: { docType: string; id:
   };
 
   if (!panel) return <div className="card"><div className="empty">Memuat…</div></div>;
+  const approvals = panel.approvals ?? [];
+  const related = panel.related ?? [];
+  const attachments = panel.attachments ?? [];
+  const signatures = panel.signatures ?? [];
+  const activity = panel.activity ?? [];
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-      {panel.approvals.length > 0 && (
+      {approvals.length > 0 && (
         <div className="card" style={{ overflow: 'hidden' }}>
           <div className="card-h">Approval</div>
-          {panel.approvals.map((t) => (
+          {approvals.map((t) => (
             <div key={t.id} className="ev" style={{ display: 'flex', gap: 10, padding: '9px 16px', borderTop: '1px solid var(--line-soft)', fontSize: 12.5 }}>
               <span className="mono muted" style={{ width: 22 }}>L{t.level}</span>
               <span style={{ flex: 1 }}>
@@ -140,14 +146,14 @@ export function DocumentSidePanel({ docType, id, panel }: { docType: string; id:
               <StatusChip status={t.status} />
             </div>
           ))}
-          {panel.approvals[0]?.docAmount != null && <div className="small muted" style={{ padding: '6px 16px 10px' }}>Nilai dokumen {fmtRp(panel.approvals[0].docAmount)}</div>}
+          {approvals[0]?.docAmount != null && <div className="small muted" style={{ padding: '6px 16px 10px' }}>Nilai dokumen {fmtRp(approvals[0].docAmount)}</div>}
         </div>
       )}
 
-      {panel.related.length > 0 && (
+      {related.length > 0 && (
         <div className="card" style={{ overflow: 'hidden' }}>
           <div className="card-h">Dokumen terkait</div>
-          {panel.related.map((r) => (
+          {related.map((r) => (
             <button key={`${r.docType}-${r.docId}`} type="button" className="rowbtn" style={{ padding: '8px 16px' }} onClick={() => nav(docLink(r.docType, r.docId, r.menuCode))}>
               <span style={{ flex: 1 }}><span className="mono small">{r.docNo}</span> <span className="muted small">{r.relation}</span></span>
               <StatusChip status={r.status} />
@@ -162,8 +168,8 @@ export function DocumentSidePanel({ docType, id, panel }: { docType: string; id:
           <button className="btn btn-sm" type="button" onClick={() => fileRef.current?.click()}><Icon name="clip" size={14} />Unggah</button>
           <input ref={fileRef} type="file" hidden onChange={(e) => { void upload(e.target.files?.[0]); e.target.value = ''; }} />
         </div>
-        {panel.attachments.length === 0 && <div className="small muted" style={{ padding: '10px 16px' }}>Belum ada lampiran</div>}
-        {panel.attachments.map((a) => (
+        {attachments.length === 0 && <div className="small muted" style={{ padding: '10px 16px' }}>Belum ada lampiran</div>}
+        {attachments.map((a) => (
           <button key={a.id} type="button" className="rowbtn" style={{ padding: '8px 16px' }}
             onClick={() => api.download(`/documents/${docType}/${id}/attachments/${a.id}`, a.filename).catch(toast.error)}>
             <Icon name="download" size={14} />
@@ -175,10 +181,10 @@ export function DocumentSidePanel({ docType, id, panel }: { docType: string; id:
         ))}
       </div>
 
-      {panel.signatures.length > 0 && (
+      {signatures.length > 0 && (
         <div className="card" style={{ overflow: 'hidden' }}>
           <div className="card-h">Tanda tangan elektronik</div>
-          {panel.signatures.map((s) => (
+          {signatures.map((s) => (
             <div key={s.id} style={{ padding: '8px 16px', borderTop: '1px solid var(--line-soft)', fontSize: 12.5 }}>
               <b>{s.fullName}</b> <span className="mono muted">{s.meaning}</span>
               <div className="muted">{fmtDateTime(s.signedAt)}{s.reason ? ` · ${s.reason}` : ''}</div>
@@ -190,7 +196,7 @@ export function DocumentSidePanel({ docType, id, panel }: { docType: string; id:
       <div className="card" style={{ overflow: 'hidden' }}>
         <div className="card-h">Riwayat aktivitas</div>
         <div className="timeline">
-          {panel.activity.map((a) => (
+          {activity.map((a) => (
             <div key={a.id} className="ev">
               <span className="lbl" style={{ width: 62, flex: 'none', fontSize: 10.5, paddingTop: 1 }}>{KIND_LABEL[a.kind] ?? a.kind}</span>
               <span className="m">

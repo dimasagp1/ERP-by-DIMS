@@ -1,0 +1,24 @@
+{
+  "short_name": "Herbatech ERP",
+  "name": "Herbatech ERP Manufaktur Terintegrasi",
+  "description": "Sistem ERP Manufaktur Herbal & Farmasi CPOTB",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#18181B",
+  "theme_color": "#4F46E5",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%234F46E5'/%3E%3Ctext x='96' y='126' font-family='sans-serif' font-weight='bold' font-size='96' fill='white' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%234F46E5'/%3E%3Ctext x='256' y='336' font-family='sans-serif' font-weight='bold' font-size='256' fill='white' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

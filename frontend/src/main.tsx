@@ -37,3 +37,12 @@ createRoot(document.getElementById('root')!).render(
     </QueryClientProvider>
   </StrictMode>,
 );
+
+// Registrasi Service Worker untuk PWA Offline Lantai Produksi (eBMR PWA)
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch((err) => {
+      console.warn('Gagal mendaftarkan service worker:', err);
+    });
+  });
+}

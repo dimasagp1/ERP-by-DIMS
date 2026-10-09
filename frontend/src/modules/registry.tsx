@@ -7,15 +7,38 @@ import { JournalForm, JournalList } from './fin/Journals';
 import { LedgerPage, PeriodPage } from './fin/Ledger';
 import { ApAgingPage, ArAgingPage, BankReconPage, BudgetControlPage, CashForecastPage, ManagementPage, StatementsPage } from './fin/reports';
 import { FiscalPage, PphPage, PpnPage, SptPage } from './fin/tax';
-import { leaveDoc, loanDoc, onboardingDoc, overtimeDoc, payrollDoc, sarmutInputDoc, tripDoc } from './hc/docs';
-import { AttendancePage, LeaveBalancePage, MySlipsPage, SalaryPage, SarmutPage } from './hc/pages';
+import { leaveDoc, loanDoc, onboardingDoc, overtimeDoc, payrollDoc, sarmutInputDoc, tripDoc, recruitmentDoc, trainingDoc, disciplineDoc } from './hc/docs';
+import { AttendancePage, LeaveBalancePage, MySlipsPage, SalaryPage, SarmutPage, HcReportPage } from './hc/pages';
 import { MASTER_MENUS } from './master/configs';
 import * as m1 from './master/m1';
 import * as m2 from './master/m2';
 import { MasterPage } from './master/MasterPage';
 import type { ResourceDef } from './master/types';
-import { outputDoc, workOrderDoc } from './pre/docs';
-import { LaborPage } from './pre/pages';
+import {
+  outputDoc,
+  workOrderDoc,
+  materialRequestDoc,
+  materialReturnDoc,
+  batchRecordDoc,
+  dispensingDoc,
+  ipcEntryDoc,
+  downtimeDoc,
+  lineClearanceDoc,
+  workRequestDoc,
+  maintenanceOrderDoc,
+  calibrationDoc,
+} from './pre/docs';
+import {
+  LaborPage,
+  ProcessReportPage,
+  RejectWastePage,
+  PmPlanPage,
+  SparepartReqPage,
+  UtilityLogPage,
+  CapexProjectPage,
+  PreReportPage,
+  machinesMaster,
+} from './pre/pages';
 import { bastDoc, landedCostDoc, purchaseOrderDoc, requisitionDoc, rfqDoc, supplierReturnDoc } from './prc/docs';
 import { adjustmentDoc, countDoc, customerReturnDoc, deliveryDoc, goodsIssueDoc, receiptDoc as scmReceiptDoc, salesOrderDoc, scrapDoc, transferDoc } from './scm/docs';
 import { CapacityPage, ExpiryPage, FgReceiptPage, ForecastPage, LotStatusPage, MpsPage, MrpPage, PickingPage, PlanActualPage, PutawayPage, ReleasePage, ScmReportPage, StockCardPage, TracePage } from './scm/pages';
@@ -23,6 +46,12 @@ import { AuditTrailPage, IntegrationLogPage } from './sys/SysPages';
 
 import * as qmsDocs from './qms/docs';
 import * as qmsPages from './qms/pages';
+
+import * as rndDocs from './rnd/docs';
+import * as rndPages from './rnd/pages';
+
+import * as gaDocs from './ga/docs';
+import * as gaPages from './ga/pages';
 
 export interface MenuImpl {
   /** Halaman tunggal (M0). */
@@ -70,31 +99,60 @@ const impl: Record<string, MenuImpl> = {
   'FIN-71': { tabs: [page('statements', 'Laporan keuangan', StatementsPage)] },
   'FIN-72': { tabs: [page('management', 'Laporan manajemen', ManagementPage)] },
 
-  // ---------------------------------------------------------------- HC (M1)
+  // ---------------------------------------------------------------- HC (M1 & M3)
+  'HC-04': { tabs: [doc(recruitmentDoc)] },
   'HC-05': { tabs: [doc(onboardingDoc)] },
   'HC-06': { tabs: [master(m1.contracts)] },
   'HC-07': { tabs: [page('attendance', 'Absensi', AttendancePage)] },
   'HC-08': { tabs: [doc(leaveDoc), doc(overtimeDoc), doc(tripDoc), master(m1.leaveTypes), master(m1.leaveEntitlements)] },
   'HC-09': { tabs: [doc(payrollDoc), page('salaries', 'Gaji karyawan', SalaryPage), master(m1.salaryComponents), master(m1.ptkp), master(m1.pph21Ter)] },
   'HC-10': { tabs: [master(m1.payrollParams)] },
+  'HC-11': { tabs: [doc(trainingDoc)] },
   'HC-12': { tabs: [master(m1.qualifications)] },
   'HC-13': { tabs: [page('sarmut', 'Capaian SARMUT', SarmutPage), doc(sarmutInputDoc), master(m1.sarmutKpis)] },
   'HC-14': { tabs: [doc(loanDoc)] },
+  'HC-15': { tabs: [doc(disciplineDoc)] },
+  'HC-90': { tabs: [page('report', 'Laporan HC', HcReportPage)] },
 
-  // ---------------------------------------------------------------- PRE (M1)
+  // ---------------------------------------------------------------- PRE (M1, M2, M3)
   'PRE-02': { tabs: [doc(workOrderDoc), master(m1.lines), master(m1.productParams)] },
+  'PRE-03': { tabs: [doc(batchRecordDoc)] },
+  'PRE-04': { tabs: [doc(materialRequestDoc)] },
+  'PRE-05': { tabs: [doc(dispensingDoc)] },
+  'PRE-06': { tabs: [page('process-report', 'Laporan Proses', ProcessReportPage)] },
+  'PRE-07': { tabs: [doc(ipcEntryDoc)] },
   'PRE-08': { tabs: [doc(outputDoc), master(m1.rejectReasons)] },
+  'PRE-09': { tabs: [page('reject-waste', 'Reject & Waste', RejectWastePage)] },
+  'PRE-10': { tabs: [doc(materialReturnDoc)] },
+  'PRE-11': { tabs: [doc(downtimeDoc)] },
   'PRE-12': { tabs: [page('labor', 'Jam kerja', LaborPage)] },
+  'PRE-13': { tabs: [doc(lineClearanceDoc)] },
+  'PRE-20': { tabs: [master(machinesMaster)] },
+  'PRE-21': { tabs: [page('pm-plan', 'Rencana PM', PmPlanPage)] },
+  'PRE-22': { tabs: [doc(workRequestDoc)] },
+  'PRE-23': { tabs: [doc(maintenanceOrderDoc)] },
+  'PRE-24': { tabs: [page('spareparts', 'Permintaan Sparepart', SparepartReqPage)] },
+  'PRE-25': { tabs: [doc(calibrationDoc)] },
+  'PRE-26': { tabs: [page('utility-log', 'Log Utilitas', UtilityLogPage)] },
+  'PRE-27': { tabs: [page('capex', 'Proyek Engineering', CapexProjectPage)] },
+  'PRE-90': { tabs: [page('report', 'Laporan Produksi', PreReportPage)] },
 
   // ---------------------------------------------------------------- PRC (M2)
   'PRC-02': { tabs: [doc(requisitionDoc)] },
   'PRC-03': { tabs: [master(m2.supplierProfiles), master(m2.asls)] },
+  'PRC-04': { tabs: [master(m2.asls)] },
   'PRC-05': { tabs: [doc(rfqDoc)] },
   'PRC-06': { tabs: [doc(purchaseOrderDoc)] },
+  'PRC-07': { tabs: [doc(purchaseOrderDoc)] },
   'PRC-08': { tabs: [master(m2.priceLists)] },
+  'PRC-09': { tabs: [page('monitoring', 'Monitoring Kedatangan', ScmReportPage)] },
   'PRC-10': { tabs: [doc(landedCostDoc)] },
+  'PRC-11': { tabs: [doc(supplierReturnDoc)] },
+  'PRC-12': { tabs: [doc(bastDoc)] },
+  'PRC-13': { tabs: [master(m2.supplierProfiles)] },
   'PRC-30': { tabs: [doc(supplierReturnDoc)] },
   'PRC-40': { tabs: [doc(bastDoc)] },
+  'PRC-90': { tabs: [page('report', 'Laporan Procurement', ScmReportPage)] },
 
   // ---------------------------------------------------------------- SCM (M2)
   'SCM-02': { tabs: [doc(salesOrderDoc)] },
@@ -102,6 +160,8 @@ const impl: Record<string, MenuImpl> = {
   'SCM-04': { tabs: [page('mps', 'MPS', MpsPage)] },
   'SCM-05': { tabs: [page('mrp', 'MRP', MrpPage)] },
   'SCM-06': { tabs: [page('capacity', 'Kapasitas', CapacityPage)] },
+  'SCM-07': { tabs: [page('release', 'Rilis WO', ReleasePage)] },
+  'SCM-08': { tabs: [page('plan-actual', 'Rencana vs Aktual', PlanActualPage)] },
   'SCM-10': { tabs: [page('release', 'Rilis WO', ReleasePage)] },
   'SCM-11': { tabs: [page('plan-actual', 'Rencana vs Aktual', PlanActualPage)] },
   'SCM-20': { tabs: [doc(scmReceiptDoc)] },
@@ -112,6 +172,8 @@ const impl: Record<string, MenuImpl> = {
   'SCM-25': { tabs: [doc(transferDoc)] },
   'SCM-26': { tabs: [doc(goodsIssueDoc)] },
   'SCM-27': { tabs: [doc(deliveryDoc)] },
+  'SCM-28': { tabs: [doc(supplierReturnDoc)] },
+  'SCM-29': { tabs: [doc(goodsIssueDoc)] },
   'SCM-30': { tabs: [doc(customerReturnDoc)] },
   'SCM-40': { tabs: [page('stock-card', 'Kartu Stok', StockCardPage)] },
   'SCM-41': { tabs: [doc(countDoc)] },
@@ -122,8 +184,7 @@ const impl: Record<string, MenuImpl> = {
   'SCM-46': { tabs: [doc(scrapDoc)] },
   'SCM-90': { tabs: [page('report', 'Laporan Supply Chain', ScmReportPage)] },
 
-
-    // ---------------------------------------------------------------- QMS (M3)
+  // ---------------------------------------------------------------- QMS (M3)
   'QMS-01': { tabs: [doc(qmsDocs.qmsDocumentDoc)] },
   'QMS-02': { tabs: [doc(qmsDocs.changeControlDoc)] },
   'QMS-03': { tabs: [doc(qmsDocs.deviationDoc)] },
@@ -139,20 +200,57 @@ const impl: Record<string, MenuImpl> = {
   'QMS-13': { tabs: [page('coa', 'Certificate of Analysis (CoA)', qmsPages.CoaPage)] },
   'QMS-14': { tabs: [page('instrument', 'Instrumen & Kalibrasi', qmsPages.InstrumentPage)] },
   'QMS-15': { tabs: [doc(qmsDocs.stabilityStudyDoc)] },
-  // ---------------------------------------------------------------- ESS (M1 & M2)
+
+  // ---------------------------------------------------------------- RND (M3)
+  'RND-01': { tabs: [page('dashboard', 'Dashboard RnD', rndPages.RndDashboardPage)] },
+  'RND-02': { tabs: [doc(rndDocs.projectDoc)] },
+  'RND-03': { tabs: [doc(rndDocs.formulaDoc)] },
+  'RND-04': { tabs: [page('bom-routing', 'BOM & Routing Produksi', MpsPage)] },
+  'RND-05': { tabs: [page('trial-sample', 'Permintaan Bahan Trial', rndPages.TrialSampleReqPage)] },
+  'RND-06': { tabs: [doc(rndDocs.trialDoc)] },
+  'RND-07': { tabs: [doc(rndDocs.productSpecDoc)] },
+  'RND-08': { tabs: [doc(qmsDocs.stabilityStudyDoc)] },
+  'RND-09': { tabs: [doc(rndDocs.productRegistrationDoc)] },
+  'RND-10': { tabs: [doc(rndDocs.artworkDoc)] },
+  'RND-11': { tabs: [master(MASTER_MENUS['SYS-06'][0], 'Pengajuan Item Baru')] },
+  'RND-12': { tabs: [doc(rndDocs.costEstimateDoc)] },
+  'RND-13': { tabs: [page('ingredient-bank', 'Bank Data Bahan', rndPages.IngredientBankPage)] },
+  'RND-14': { tabs: [page('change-request', 'Usulan Perubahan Formula', rndPages.FormulaChangeReqPage), doc(qmsDocs.changeControlDoc)] },
+  'RND-90': { tabs: [page('report', 'Laporan RnD', rndPages.RndReportPage)] },
+
+  // ---------------------------------------------------------------- GA (M3)
+  'GA-01': { tabs: [page('dashboard', 'Dashboard GA', gaPages.GaDashboardPage)] },
+  'GA-02': { tabs: [master(gaPages.inventoryAssets)] },
+  'GA-03': { tabs: [doc(gaDocs.gaServiceRequestDoc)] },
+  'GA-04': { tabs: [doc(gaDocs.vehicleBookingDoc)] },
+  'GA-05': { tabs: [page('room-booking', 'Booking Ruang Rapat', gaPages.RoomBookingPage)] },
+  'GA-06': { tabs: [page('facility', 'Pemeliharaan Gedung', gaPages.FacilityMaintenancePage)] },
+  'GA-07': { tabs: [page('pest-waste', 'Pest Control & Limbah', gaPages.PestWastePage)] },
+  'GA-08': { tabs: [doc(gaDocs.gatePassDoc)] },
+  'GA-09': { tabs: [page('permits', 'Perizinan Perusahaan', gaPages.PermitsPage)] },
+  'GA-10': { tabs: [page('vendor-contract', 'Kontrak Vendor Jasa', gaPages.VendorContractPage)] },
+  'GA-11': { tabs: [page('catering', 'Katering & Konsumsi', gaPages.CateringPage)] },
+  'GA-12': { tabs: [page('travel', 'Perjalanan Dinas & Tiket', gaPages.TravelAccomPage)] },
+  'GA-13': { tabs: [doc(gaDocs.hsseIncidentDoc)] },
+  'GA-90': { tabs: [page('report', 'Laporan GA', gaPages.GaReportPage)] },
+
+  // ---------------------------------------------------------------- ESS (M1, M2, M3)
   'ESS-01': { tabs: [doc(mine(leaveDoc), 'Pengajuan saya'), page('balance', 'Saldo cuti', LeaveBalancePage)] },
   'ESS-02': { tabs: [doc(mine(overtimeDoc), 'Lembur saya')] },
   'ESS-03': { tabs: [page('slips', 'Slip gaji', MySlipsPage)] },
   'ESS-04': { tabs: [doc(mine(requisitionDoc), 'Permintaan saya')] },
-  'ESS-05': { tabs: [page('atk', 'Permintaan ATK', () => <div style={{padding: 20}}>Segera hadir</div>)] },
-  'ESS-06': { tabs: [page('rapat', 'Booking Ruang Rapat', () => <div style={{padding: 20}}>Segera hadir</div>)] },
-  'ESS-07': { tabs: [page('kendaraan', 'Booking Kendaraan', () => <div style={{padding: 20}}>Segera hadir</div>)] },
-  'ESS-08': { tabs: [page('kerusakan', 'Lapor Kerusakan', () => <div style={{padding: 20}}>Segera hadir</div>)] },
+  'ESS-05': { tabs: [doc(mine(gaDocs.gaServiceRequestDoc), 'Permintaan ATK Saya')] },
+  'ESS-06': { tabs: [page('rapat', 'Booking Ruang Rapat', gaPages.RoomBookingPage)] },
+  'ESS-07': { tabs: [doc(mine(gaDocs.vehicleBookingDoc), 'Booking Kendaraan Saya')] },
+  'ESS-08': { tabs: [doc(mine(workRequestDoc), 'Lapor Kerusakan Saya')] },
   'ESS-09': { tabs: [doc(mine(tripDoc), 'Perjalanan dinas saya')] },
 };
 
 Object.entries(MASTER_MENUS).forEach(([code, resources]) => {
-  impl[code] = { list: () => <MasterPage resources={resources} /> };
+  impl[code] = {
+    tabs: resources.map((r) => master(r, r.title)),
+    list: () => <MasterPage resources={resources} />,
+  };
 });
 
 /** Menu yang sudah dibangun. Menu lain menampilkan halaman rencana fase (PLANNING.md). */

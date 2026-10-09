@@ -1,0 +1,2245 @@
+[
+ {
+  "code": "PRE",
+  "name": "Produksi & Engineering",
+  "short": "Produksi",
+  "color": "#9A3412",
+  "self": false,
+  "masters": [
+   "Lini & work center",
+   "Alasan downtime",
+   "Alasan reject & waste",
+   "Checklist line clearance",
+   "Jenis maintenance"
+  ],
+  "docs": [
+   {
+    "prefix": "WO",
+    "name": "Work Order Produksi"
+   },
+   {
+    "prefix": "BMR",
+    "name": "Batch Record"
+   },
+   {
+    "prefix": "WRQ",
+    "name": "Work Request"
+   },
+   {
+    "prefix": "MNT",
+    "name": "WO Maintenance"
+   }
+  ],
+  "sends": {
+   "PRC": "PR sparepart, BAST jasa",
+   "FIN": "Hasil produksi, jam kerja, biaya maintenance",
+   "GA": "Laporan kerusakan fasilitas",
+   "HC": "Kebutuhan operator berkualifikasi",
+   "QMS": "eBMR, IPC, line clearance, deviasi",
+   "SCM": "Permintaan bahan, barang jadi, retur sisa",
+   "RND": "Data proses untuk scale-up"
+  },
+  "groups": [
+   {
+    "name": "Produksi",
+    "items": [
+     {
+      "code": "PRE-02",
+      "name": "Work Order Produksi",
+      "fn": "Terima WO dari PPIC, tetapkan lini, shift, dan operator berkualifikasi.",
+      "links": [
+       "SCM-07",
+       "HC-12"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "PRE-03",
+      "name": "Batch Record Elektronik",
+      "fn": "Catatan pengolahan dan pengemasan per tahap dengan tanda tangan elektronik.",
+      "links": [
+       "QMS-09",
+       "QMS-02"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "PRE-04",
+      "name": "Permintaan Bahan",
+      "fn": "Minta bahan sesuai BOM batch ke gudang.",
+      "links": [
+       "SCM-23"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "PRE-05",
+      "name": "Penimbangan & Dispensing",
+      "fn": "Timbang per lot bahan dengan barcode, verifikasi ganda, cetak label dispensing.",
+      "links": [
+       "SCM-23",
+       "QMS-04"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "PRE-06",
+      "name": "Laporan Proses per Tahap",
+      "fn": "Mulai dan selesai tiap tahap routing beserta parameter proses.",
+      "links": [
+       "RND-04"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "PRE-07",
+      "name": "In-Process Control",
+      "fn": "Input hasil IPC; nilai di luar batas mengunci tahap berikutnya.",
+      "links": [
+       "QMS-23",
+       "QMS-04"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "PRE-08",
+      "name": "Hasil Produksi & Serah Terima",
+      "fn": "Lapor output dan yield, serahkan barang jadi ke gudang karantina.",
+      "links": [
+       "SCM-24",
+       "FIN-53"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "PRE-09",
+      "name": "Reject, Waste & Rework",
+      "fn": "Catat reject per sebab dan usulan rework.",
+      "links": [
+       "QMS-04",
+       "SCM-46"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "PRE-10",
+      "name": "Retur Sisa Bahan",
+      "fn": "Kembalikan sisa bahan ke gudang per lot.",
+      "links": [
+       "SCM-23"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "PRE-11",
+      "name": "Downtime & Kendala Lini",
+      "fn": "Catat henti mesin per sebab; otomatis membuka work request.",
+      "links": [
+       "PRE-22",
+       "SCM-08"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "PRE-12",
+      "name": "Jam Kerja Lini",
+      "fn": "Jam orang per WO dari absensi.",
+      "links": [
+       "HC-07",
+       "FIN-53"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "PRE-13",
+      "name": "Line Clearance",
+      "fn": "Checklist pembersihan dan pembebasan jalur sebelum batch dimulai.",
+      "links": [
+       "QMS-09"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "Engineering",
+    "items": [
+     {
+      "code": "PRE-20",
+      "name": "Register Mesin & Peralatan",
+      "fn": "Data mesin, lokasi, kapasitas, dan status kualifikasi.",
+      "links": [
+       "FIN-40",
+       "SCM-06"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "PRE-21",
+      "name": "Rencana Preventive Maintenance",
+      "fn": "Jadwal PM berbasis waktu atau jam jalan.",
+      "links": [
+       "SCM-06"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "PRE-22",
+      "name": "Work Request",
+      "fn": "Permintaan perbaikan dari lini atau Layanan Saya.",
+      "links": [
+       "PRE-11",
+       "ESS-08"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "PRE-23",
+      "name": "Work Order Maintenance",
+      "fn": "Tugas teknisi, jam kerja, sparepart terpakai, sebab kerusakan.",
+      "links": [
+       "FIN-53",
+       "FIN-55"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "PRE-24",
+      "name": "Permintaan Sparepart",
+      "fn": "Ambil dari gudang; bila kosong otomatis menjadi PR.",
+      "links": [
+       "SCM-29",
+       "PRC-02"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "PRE-25",
+      "name": "Kalibrasi & Kualifikasi",
+      "fn": "Jadwal IQ/OQ/PQ dan kalibrasi, sertifikat, status lulus/gagal.",
+      "links": [
+       "QMS-10",
+       "QMS-29"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "PRE-26",
+      "name": "Log Utilitas",
+      "fn": "Listrik, air, steam, kompresor, dan data HVAC.",
+      "links": [
+       "FIN-55",
+       "QMS-31"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "PRE-27",
+      "name": "Proyek Engineering & Capex",
+      "fn": "Usulan, anggaran, progres, dan kapitalisasi.",
+      "links": [
+       "FIN-50",
+       "FIN-40"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "Laporan",
+    "items": [
+     {
+      "code": "PRE-90",
+      "name": "Laporan Produksi & Maintenance",
+      "fn": "Yield, OEE, MTBF, MTTR, kepatuhan PM.",
+      "links": [
+       "HC-13"
+      ],
+      "phase": "M3"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "code": "PRC",
+  "name": "Procurement",
+  "short": "Procurement",
+  "color": "#4D7C0F",
+  "self": false,
+  "masters": [
+   "Kategori pembelian",
+   "Termin pembayaran",
+   "Incoterm",
+   "Batas nilai RFQ"
+  ],
+  "docs": [
+   {
+    "prefix": "PR",
+    "name": "Purchase Requisition"
+   },
+   {
+    "prefix": "RFQ",
+    "name": "Permintaan Penawaran"
+   },
+   {
+    "prefix": "PO",
+    "name": "Purchase Order"
+   },
+   {
+    "prefix": "RTS",
+    "name": "Retur ke Supplier"
+   }
+  ],
+  "sends": {
+   "PRE": "Status PO sparepart",
+   "FIN": "PO (komitmen anggaran), landed cost, BAST",
+   "GA": "PO jasa vendor",
+   "QMS": "Pengajuan kualifikasi supplier",
+   "SCM": "PO dan ETA kedatangan",
+   "RND": "Harga kontrak bahan"
+  },
+  "groups": [
+   {
+    "name": "Permintaan",
+    "items": [
+     {
+      "code": "PRC-02",
+      "name": "Purchase Requisition",
+      "fn": "Kotak masuk PR dari MRP, sparepart, GA, RnD, dan Layanan Saya; konsolidasi per item dan supplier.",
+      "links": [
+       "SCM-05",
+       "PRE-24",
+       "GA-03",
+       "RND-05",
+       "ESS-04",
+       "FIN-51"
+      ],
+      "phase": "M2"
+     }
+    ]
+   },
+   {
+    "name": "Supplier",
+    "items": [
+     {
+      "code": "PRC-03",
+      "name": "Registrasi & Onboarding Supplier",
+      "fn": "Data legal, NPWP, rekening, dokumen; ajukan kualifikasi ke QA.",
+      "links": [
+       "QMS-08",
+       "SYS-08"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "PRC-04",
+      "name": "Daftar Supplier Disetujui (ASL)",
+      "fn": "Kombinasi item\u2013supplier\u2013pabrikan yang boleh dibeli.",
+      "links": [
+       "QMS-08",
+       "QMS-13"
+      ],
+      "phase": "M2"
+     }
+    ]
+   },
+   {
+    "name": "Sourcing",
+    "items": [
+     {
+      "code": "PRC-05",
+      "name": "RFQ / Permintaan Penawaran",
+      "fn": "Kirim RFQ ke beberapa supplier.",
+      "links": [
+       "PRC-06"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "PRC-06",
+      "name": "Perbandingan Penawaran",
+      "fn": "Bandingkan harga, lead time, termin; pilih pemenang.",
+      "links": [
+       "PRC-07"
+      ],
+      "phase": "M2"
+     }
+    ]
+   },
+   {
+    "name": "Pembelian",
+    "items": [
+     {
+      "code": "PRC-07",
+      "name": "Purchase Order",
+      "fn": "PO barang dan jasa, revisi PO, cetak dan kirim.",
+      "links": [
+       "SCM-20",
+       "FIN-10",
+       "FIN-51"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "PRC-08",
+      "name": "Kontrak & Daftar Harga",
+      "fn": "Harga berlaku per periode, dipakai otomatis saat PO.",
+      "links": [
+       "RND-12",
+       "FIN-52"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "PRC-09",
+      "name": "Monitoring Kedatangan",
+      "fn": "PO outstanding, ETA, follow-up supplier.",
+      "links": [
+       "SCM-20",
+       "SCM-04"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "PRC-10",
+      "name": "Impor & Landed Cost",
+      "fn": "Shipment, PIB, bea masuk, freight; alokasi ke harga pokok.",
+      "links": [
+       "FIN-54",
+       "FIN-61"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "PRC-11",
+      "name": "Retur & Klaim Supplier",
+      "fn": "Retur barang reject QC dan nota debet.",
+      "links": [
+       "QMS-22",
+       "SCM-28",
+       "FIN-10"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "PRC-12",
+      "name": "Pengadaan Jasa & BAST",
+      "fn": "PO jasa dan konfirmasi jasa selesai oleh peminta.",
+      "links": [
+       "GA-10",
+       "PRE-23",
+       "FIN-10"
+      ],
+      "phase": "M2"
+     }
+    ]
+   },
+   {
+    "name": "Evaluasi",
+    "items": [
+     {
+      "code": "PRC-13",
+      "name": "Penilaian Kinerja Supplier",
+      "fn": "Skor ketepatan waktu dari GR, mutu dari QC, dan harga.",
+      "links": [
+       "SCM-20",
+       "QMS-22"
+      ],
+      "phase": "M2"
+     }
+    ]
+   },
+   {
+    "name": "Laporan",
+    "items": [
+     {
+      "code": "PRC-90",
+      "name": "Laporan Procurement",
+      "fn": "Spend analysis, saving, lead time PR \u2192 PO \u2192 GR.",
+      "links": [
+       "HC-13"
+      ],
+      "phase": "M2"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "code": "FIN",
+  "name": "Finance & Tax",
+  "short": "Finance",
+  "color": "#1E40AF",
+  "self": false,
+  "masters": [
+   "Mapping akun otomatis",
+   "Termin pembayaran",
+   "Tarif overhead",
+   "Rekening bank",
+   "Periode akuntansi"
+  ],
+  "docs": [
+   {
+    "prefix": "INV-AP",
+    "name": "Faktur Supplier"
+   },
+   {
+    "prefix": "INV-AR",
+    "name": "Faktur Penjualan"
+   },
+   {
+    "prefix": "PAY",
+    "name": "Pembayaran"
+   },
+   {
+    "prefix": "JV",
+    "name": "Jurnal Umum"
+   }
+  ],
+  "sends": {
+   "PRE": "Biaya aktual dan varians batch",
+   "PRC": "Sisa anggaran, status bayar",
+   "GA": "Petty cash, uang muka",
+   "HC": "Anggaran headcount",
+   "SCM": "Cek kredit customer, nilai stok",
+   "RND": "Standard cost"
+  },
+  "groups": [
+   {
+    "name": "Akuntansi",
+    "items": [
+     {
+      "code": "FIN-02",
+      "name": "Bagan Akun & Cost Center",
+      "fn": "COA dan mapping akun otomatis per jenis transaksi.",
+      "links": [
+       "SYS-02"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "FIN-03",
+      "name": "Jurnal Umum & Otomatis",
+      "fn": "Jurnal manual dan antrean jurnal dari modul lain.",
+      "links": [
+       "HC-09",
+       "SCM-42",
+       "SCM-46"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "FIN-04",
+      "name": "Buku Besar & Neraca Saldo",
+      "fn": "Saldo per akun dengan drill-down ke dokumen sumber.",
+      "links": [
+       "FIN-03"
+      ],
+      "phase": "M0"
+     }
+    ]
+   },
+   {
+    "name": "Hutang & Piutang",
+    "items": [
+     {
+      "code": "FIN-10",
+      "name": "Faktur Supplier & 3-Way Match",
+      "fn": "Cocokkan PO\u2013GR\u2013faktur; selisih masuk antrean.",
+      "links": [
+       "PRC-07",
+       "SCM-20",
+       "PRC-12"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "FIN-11",
+      "name": "Uang Muka Pembelian",
+      "fn": "DP ke supplier, dipotong saat faktur.",
+      "links": [
+       "PRC-07"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "FIN-12",
+      "name": "Jadwal & Pembayaran Hutang",
+      "fn": "Usulan bayar, approval, bukti transfer.",
+      "links": [
+       "FIN-31"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "FIN-20",
+      "name": "Faktur Penjualan & Piutang",
+      "fn": "Faktur dari surat jalan dengan harga dari daftar harga.",
+      "links": [
+       "SCM-26",
+       "SCM-02"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "FIN-21",
+      "name": "Penerimaan Pembayaran",
+      "fn": "Alokasi pelunasan ke faktur.",
+      "links": [
+       "FIN-31"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "FIN-22",
+      "name": "Umur Piutang & Penagihan",
+      "fn": "Aging dan limit kredit customer.",
+      "links": [
+       "SCM-02"
+      ],
+      "phase": "M1"
+     }
+    ]
+   },
+   {
+    "name": "Kas, Aset & Anggaran",
+    "items": [
+     {
+      "code": "FIN-30",
+      "name": "Kas Kecil & Uang Muka Kerja",
+      "fn": "Petty cash, uang muka dinas, pertanggungjawaban.",
+      "links": [
+       "GA-12",
+       "ESS-09"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "FIN-31",
+      "name": "Mutasi & Rekonsiliasi Bank",
+      "fn": "Impor mutasi bank dan cocokkan otomatis.",
+      "links": [
+       "FIN-12",
+       "FIN-21"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "FIN-32",
+      "name": "Proyeksi Arus Kas",
+      "fn": "Dari jatuh tempo hutang, piutang, dan payroll.",
+      "links": [
+       "HC-09"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "FIN-40",
+      "name": "Aset Tetap & Penyusutan",
+      "fn": "Kapitalisasi, penyusutan komersial dan fiskal, disposal.",
+      "links": [
+       "PRE-20",
+       "PRE-27",
+       "GA-02"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "FIN-50",
+      "name": "Penyusunan Anggaran",
+      "fn": "Anggaran OPEX/CAPEX per cost center per bulan.",
+      "links": [
+       "HC-04",
+       "PRE-27"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "FIN-51",
+      "name": "Kontrol Anggaran",
+      "fn": "Komitmen PR/PO dibanding realisasi.",
+      "links": [
+       "PRC-02",
+       "PRC-07"
+      ],
+      "phase": "M1"
+     }
+    ]
+   },
+   {
+    "name": "Biaya",
+    "items": [
+     {
+      "code": "FIN-52",
+      "name": "Standard Cost & BOM Costing",
+      "fn": "Biaya standar dari BOM, routing, dan tarif overhead.",
+      "links": [
+       "RND-04",
+       "PRC-08"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "FIN-53",
+      "name": "Biaya Aktual per Batch",
+      "fn": "Bahan, jam kerja, overhead aktual dan varians per batch.",
+      "links": [
+       "PRE-05",
+       "PRE-08",
+       "PRE-12"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "FIN-54",
+      "name": "Valuasi Persediaan & HPP",
+      "fn": "Rata-rata tertimbang per item dan HPP penjualan.",
+      "links": [
+       "SCM-40",
+       "PRC-10"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "FIN-55",
+      "name": "Alokasi Overhead",
+      "fn": "Utilitas, depresiasi, maintenance ke cost center produksi.",
+      "links": [
+       "PRE-26",
+       "PRE-23",
+       "FIN-40"
+      ],
+      "phase": "M2"
+     }
+    ]
+   },
+   {
+    "name": "Pajak",
+    "items": [
+     {
+      "code": "FIN-60",
+      "name": "PPN & e-Faktur",
+      "fn": "Faktur pajak masukan dan keluaran, ekspor data ke DJP.",
+      "links": [
+       "FIN-10",
+       "FIN-20"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "FIN-61",
+      "name": "PPh 21 / 23 / 4(2) / 22",
+      "fn": "Dari payroll, faktur jasa, dan impor.",
+      "links": [
+       "HC-09",
+       "PRC-12",
+       "PRC-10"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "FIN-62",
+      "name": "Bukti Potong & SPT Masa",
+      "fn": "Rekap per masa pajak dan status lapor.",
+      "links": [
+       "FIN-61"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "FIN-63",
+      "name": "Rekonsiliasi Fiskal",
+      "fn": "Koreksi fiskal untuk SPT Tahunan Badan.",
+      "links": [
+       "FIN-71"
+      ],
+      "phase": "M2"
+     }
+    ]
+   },
+   {
+    "name": "Closing & Laporan",
+    "items": [
+     {
+      "code": "FIN-70",
+      "name": "Closing Periode",
+      "fn": "Checklist closing dan kunci periode per modul.",
+      "links": [
+       "SCM-41",
+       "FIN-53"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "FIN-71",
+      "name": "Laporan Keuangan",
+      "fn": "Laba rugi, neraca, arus kas.",
+      "links": [
+       "FIN-04"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "FIN-72",
+      "name": "Laporan Manajemen & Umpan BSC",
+      "fn": "Margin per produk dan realisasi anggaran per departemen.",
+      "links": [
+       "HC-13"
+      ],
+      "phase": "M1"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "code": "GA",
+  "name": "General Affairs",
+  "short": "GA",
+  "color": "#6B21A8",
+  "self": false,
+  "masters": [
+   "Ruang rapat",
+   "Kendaraan",
+   "Kategori permintaan & SLA",
+   "Jenis izin perusahaan"
+  ],
+  "docs": [
+   {
+    "prefix": "ATK",
+    "name": "Permintaan ATK"
+   },
+   {
+    "prefix": "VHB",
+    "name": "Booking Kendaraan"
+   },
+   {
+    "prefix": "GP",
+    "name": "Gate Pass"
+   },
+   {
+    "prefix": "K3",
+    "name": "Laporan Insiden K3"
+   }
+  ],
+  "sends": {
+   "PRC": "PR ATK, PO jasa",
+   "FIN": "Aset kantor, biaya kendaraan dan fasilitas",
+   "HC": "Insiden K3, aset per karyawan",
+   "QMS": "Pest control, insiden di area produksi",
+   "SCM": "Verifikasi gate pass",
+   "RND": "Izin perusahaan untuk registrasi"
+  },
+  "groups": [
+   {
+    "name": "Aset",
+    "items": [
+     {
+      "code": "GA-02",
+      "name": "Inventaris & Aset Non-Produksi",
+      "fn": "Kendaraan, IT, furnitur, dan pemegang aset per karyawan.",
+      "links": [
+       "FIN-40",
+       "HC-05"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "Layanan",
+    "items": [
+     {
+      "code": "GA-03",
+      "name": "Permintaan ATK & Konsumabel",
+      "fn": "Dari Layanan Saya; dipenuhi dari stok GA atau menjadi PR.",
+      "links": [
+       "ESS-05",
+       "SCM-29",
+       "PRC-02"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "GA-04",
+      "name": "Kendaraan Operasional",
+      "fn": "Booking, BBM, servis, pajak kendaraan.",
+      "links": [
+       "ESS-07",
+       "FIN-30"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "GA-05",
+      "name": "Booking Ruang Rapat",
+      "fn": "Kalender pemakaian ruang.",
+      "links": [
+       "ESS-06"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "GA-11",
+      "name": "Katering & Konsumsi",
+      "fn": "Jumlah porsi dari absensi harian.",
+      "links": [
+       "HC-07"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "GA-12",
+      "name": "Perjalanan Dinas",
+      "fn": "Tiket dan akomodasi dari SPD yang disetujui.",
+      "links": [
+       "HC-08",
+       "FIN-30"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "Fasilitas",
+    "items": [
+     {
+      "code": "GA-06",
+      "name": "Pemeliharaan Gedung & Fasilitas",
+      "fn": "Perbaikan non-mesin produksi.",
+      "links": [
+       "ESS-08",
+       "PRC-12"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "GA-07",
+      "name": "Kebersihan, Pest Control & Limbah",
+      "fn": "Jadwal pest control dan manifest limbah B3.",
+      "links": [
+       "QMS-31",
+       "SCM-46"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "Keamanan & Legal",
+    "items": [
+     {
+      "code": "GA-08",
+      "name": "Buku Tamu & Gate Pass",
+      "fn": "Tamu, kontraktor, dan barang keluar dicocokkan dengan surat jalan.",
+      "links": [
+       "SCM-26",
+       "SCM-28"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "GA-09",
+      "name": "Perizinan & Dokumen Perusahaan",
+      "fn": "Izin dan sertifikat dengan pengingat masa berlaku.",
+      "links": [
+       "RND-09",
+       "QMS-07"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "GA-10",
+      "name": "Kontrak Vendor Jasa",
+      "fn": "Outsourcing, katering, keamanan, kebersihan.",
+      "links": [
+       "PRC-12",
+       "FIN-10"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "K3",
+    "items": [
+     {
+      "code": "GA-13",
+      "name": "K3 & Lingkungan",
+      "fn": "Insiden, APD, inspeksi APAR, izin kerja berbahaya.",
+      "links": [
+       "HC-03",
+       "QMS-04"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "Laporan",
+    "items": [
+     {
+      "code": "GA-90",
+      "name": "Laporan GA",
+      "fn": "Biaya kendaraan, SLA permintaan, insiden K3.",
+      "links": [
+       "HC-13"
+      ],
+      "phase": "M3"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "code": "HC",
+  "name": "HRD / Human Capital",
+  "short": "HC",
+  "color": "#BE123C",
+  "self": false,
+  "masters": [
+   "Komponen gaji",
+   "Pola shift",
+   "Jenis cuti & izin",
+   "Skema penilaian kinerja"
+  ],
+  "docs": [
+   {
+    "prefix": "LV",
+    "name": "Cuti & Izin"
+   },
+   {
+    "prefix": "OT",
+    "name": "Lembur"
+   },
+   {
+    "prefix": "SPD",
+    "name": "Perjalanan Dinas"
+   },
+   {
+    "prefix": "TRN",
+    "name": "Training"
+   }
+  ],
+  "sends": {
+   "PRE": "Kualifikasi operator, jam kerja",
+   "FIN": "Jurnal payroll, PPh 21",
+   "GA": "Jumlah hadir (katering), SPD",
+   "QMS": "Status training",
+   "SCM": "Ketersediaan shift"
+  },
+  "groups": [
+   {
+    "name": "Organisasi",
+    "items": [
+     {
+      "code": "HC-02",
+      "name": "Struktur Organisasi & Posisi",
+      "fn": "Bagan organisasi, uraian jabatan, atasan langsung sebagai dasar approval.",
+      "links": [
+       "SYS-02",
+       "SYS-04"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "HC-03",
+      "name": "Data Karyawan",
+      "fn": "Data pribadi, posisi, cost center, dokumen.",
+      "links": [
+       "SYS-03"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "HC-05",
+      "name": "Onboarding & Offboarding",
+      "fn": "Checklist akun, aset, training wajib, serah terima.",
+      "links": [
+       "SYS-03",
+       "GA-02",
+       "HC-11"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "HC-06",
+      "name": "Kontrak & Status Kepegawaian",
+      "fn": "PKWT/PKWTT dan pengingat habis kontrak.",
+      "links": [
+       "HC-03"
+      ],
+      "phase": "M1"
+     }
+    ]
+   },
+   {
+    "name": "Rekrutmen",
+    "items": [
+     {
+      "code": "HC-04",
+      "name": "Permintaan Tenaga Kerja & Rekrutmen",
+      "fn": "MPP, lowongan, kandidat, offering.",
+      "links": [
+       "FIN-50"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "Waktu",
+    "items": [
+     {
+      "code": "HC-07",
+      "name": "Absensi & Jadwal Shift",
+      "fn": "Data mesin absensi dan jadwal shift per lini.",
+      "links": [
+       "SCM-06",
+       "PRE-12",
+       "GA-11",
+       "HC-09"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "HC-08",
+      "name": "Cuti, Izin, Lembur & Perjalanan Dinas",
+      "fn": "Pengajuan dan approval dari Layanan Saya.",
+      "links": [
+       "ESS-01",
+       "ESS-02",
+       "GA-12"
+      ],
+      "phase": "M1"
+     }
+    ]
+   },
+   {
+    "name": "Payroll",
+    "items": [
+     {
+      "code": "HC-09",
+      "name": "Penggajian",
+      "fn": "Gaji, tunjangan, lembur, potongan; jurnal ke Finance.",
+      "links": [
+       "FIN-03",
+       "FIN-61",
+       "FIN-32"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "HC-10",
+      "name": "BPJS & Benefit",
+      "fn": "Iuran BPJS dan klaim.",
+      "links": [
+       "HC-09"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "HC-14",
+      "name": "Pinjaman & Kasbon",
+      "fn": "Pengajuan dan cicilan potong gaji.",
+      "links": [
+       "HC-09",
+       "FIN-30"
+      ],
+      "phase": "M1"
+     }
+    ]
+   },
+   {
+    "name": "Pengembangan & Kinerja",
+    "items": [
+     {
+      "code": "HC-11",
+      "name": "Pelatihan & Matriks Training",
+      "fn": "Training wajib per posisi, jadwal, evaluasi.",
+      "links": [
+       "QMS-02",
+       "HC-12"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "HC-12",
+      "name": "Kompetensi & Kualifikasi Operator",
+      "fn": "Siapa berkualifikasi di proses dan mesin apa, sampai kapan.",
+      "links": [
+       "PRE-02"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "HC-13",
+      "name": "Sasaran Mutu (SARMUT) & Kinerja",
+      "fn": "Hitung skor dari data modul lain, kirim ke BSC.",
+      "links": [
+       "FIN-72",
+       "QMS-90",
+       "SCM-90",
+       "PRE-90"
+      ],
+      "phase": "M1"
+     }
+    ]
+   },
+   {
+    "name": "Hubungan Industrial",
+    "items": [
+     {
+      "code": "HC-15",
+      "name": "Disiplin & Peraturan Perusahaan",
+      "fn": "SP, catatan pembinaan, PP/PKB.",
+      "links": [
+       "HC-03"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "Laporan",
+    "items": [
+     {
+      "code": "HC-90",
+      "name": "Laporan HC",
+      "fn": "Headcount, biaya tenaga kerja, kepatuhan training.",
+      "links": [
+       "HC-13"
+      ],
+      "phase": "M3"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "code": "SCM",
+  "name": "Supply Chain",
+  "short": "Supply Chain",
+  "color": "#0E7490",
+  "self": false,
+  "masters": [
+   "Aturan putaway",
+   "Strategi picking (FEFO)",
+   "Parameter MRP",
+   "Zona gudang"
+  ],
+  "docs": [
+   {
+    "prefix": "SO",
+    "name": "Pesanan Pelanggan"
+   },
+   {
+    "prefix": "GR",
+    "name": "Penerimaan Barang"
+   },
+   {
+    "prefix": "DO",
+    "name": "Surat Jalan"
+   },
+   {
+    "prefix": "ADJ",
+    "name": "Penyesuaian Stok"
+   }
+  ],
+  "sends": {
+   "PRE": "Work order, bahan terpick",
+   "PRC": "PR otomatis MRP, GR",
+   "FIN": "GR, adjustment, surat jalan, valuasi stok",
+   "GA": "Surat jalan (gate pass), barang dimusnahkan",
+   "HC": "Kebutuhan shift",
+   "QMS": "Tugas sampling, retur pelanggan, hasil trace",
+   "RND": "Pengajuan item, data stok bahan"
+  },
+  "groups": [
+   {
+    "name": "PPIC",
+    "items": [
+     {
+      "code": "SCM-02",
+      "name": "Pesanan Pelanggan",
+      "fn": "Pesanan, tanggal kirim, cek stok dan kredit.",
+      "links": [
+       "FIN-22",
+       "SCM-03"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-03",
+      "name": "Forecast & S&OP",
+      "fn": "Ramalan per SKU per bulan dan rapat S&OP.",
+      "links": [
+       "SCM-04",
+       "RND-02"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-04",
+      "name": "Master Production Schedule",
+      "fn": "Rencana produksi per SKU per minggu.",
+      "links": [
+       "SCM-05",
+       "SCM-06"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-05",
+      "name": "MRP",
+      "fn": "Ledakan BOM dikurangi stok dan PO berjalan; usulan PR otomatis.",
+      "links": [
+       "RND-04",
+       "SCM-40",
+       "PRC-09",
+       "PRC-02"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-06",
+      "name": "Rencana Kapasitas & Jadwal Lini",
+      "fn": "Beban per lini dan mesin, kebutuhan shift.",
+      "links": [
+       "PRE-20",
+       "PRE-21",
+       "HC-07"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-07",
+      "name": "Rilis Work Order",
+      "fn": "Terbitkan WO dengan nomor batch dan tanggal kedaluwarsa.",
+      "links": [
+       "PRE-02"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-08",
+      "name": "Rencana vs Aktual",
+      "fn": "Progres WO, keterlambatan, pemenuhan order.",
+      "links": [
+       "PRE-08",
+       "PRE-11"
+      ],
+      "phase": "M2"
+     }
+    ]
+   },
+   {
+    "name": "Warehouse",
+    "items": [
+     {
+      "code": "SCM-20",
+      "name": "Penerimaan Barang (GR)",
+      "fn": "Terima dari PO dengan lot supplier dan ED; label karantina.",
+      "links": [
+       "PRC-07",
+       "QMS-21",
+       "FIN-10"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-21",
+      "name": "Status Stok & Karantina",
+      "fn": "Quarantine, Released, Rejected, Hold per lot (diubah oleh QA).",
+      "links": [
+       "QMS-09",
+       "QMS-22"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-22",
+      "name": "Putaway & Lokasi Bin",
+      "fn": "Saran lokasi sesuai zona suhu, karantina, B3.",
+      "links": [
+       "SYS-09"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-23",
+      "name": "Picking & Serah Bahan",
+      "fn": "Pick per lot dengan FEFO dan terima retur sisa bahan.",
+      "links": [
+       "PRE-04",
+       "PRE-10",
+       "PRE-05"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-24",
+      "name": "Terima Barang Jadi",
+      "fn": "Terima produk jadi ke karantina.",
+      "links": [
+       "PRE-08",
+       "QMS-21"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-25",
+      "name": "Transfer Antar Gudang",
+      "fn": "Mutasi antar gudang dan plant.",
+      "links": [
+       "SCM-40"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-26",
+      "name": "Pengiriman & Surat Jalan",
+      "fn": "Pick, packing, muat, surat jalan dan CoA.",
+      "links": [
+       "SCM-02",
+       "QMS-25",
+       "FIN-20",
+       "GA-08"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-27",
+      "name": "Retur Pelanggan",
+      "fn": "Terima retur ke status Hold.",
+      "links": [
+       "QMS-06",
+       "FIN-20"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-28",
+      "name": "Retur ke Supplier",
+      "fn": "Keluarkan barang reject.",
+      "links": [
+       "PRC-11",
+       "GA-08"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-29",
+      "name": "Pengeluaran Non-Produksi",
+      "fn": "Sparepart, ATK, konsumabel ke cost center.",
+      "links": [
+       "PRE-24",
+       "GA-03"
+      ],
+      "phase": "M2"
+     }
+    ]
+   },
+   {
+    "name": "Inventory Control",
+    "items": [
+     {
+      "code": "SCM-40",
+      "name": "Kartu Stok & Saldo per Lot",
+      "fn": "Mutasi per item, lot, dan lokasi.",
+      "links": [
+       "FIN-54"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-41",
+      "name": "Stock Opname & Cycle Count",
+      "fn": "Jadwal hitung, input scanner, selisih.",
+      "links": [
+       "SCM-42",
+       "FIN-70"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-42",
+      "name": "Penyesuaian Stok",
+      "fn": "Adjustment dengan alasan dan approval.",
+      "links": [
+       "FIN-03"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-43",
+      "name": "Parameter Stok",
+      "fn": "Min/Max, reorder point, safety stock.",
+      "links": [
+       "SCM-05"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-44",
+      "name": "Kedaluwarsa & Slow Moving",
+      "fn": "Lot ED < 6 bulan dan tidak bergerak > 90 hari.",
+      "links": [
+       "SCM-46",
+       "SCM-04"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-45",
+      "name": "Penelusuran Lot",
+      "fn": "Mundur dan maju: bahan \u2192 batch \u2192 customer.",
+      "links": [
+       "QMS-06"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "SCM-46",
+      "name": "Pemusnahan Barang",
+      "fn": "Usulan, approval QA dan FIN, berita acara.",
+      "links": [
+       "PRE-09",
+       "GA-07",
+       "FIN-03"
+      ],
+      "phase": "M2"
+     }
+    ]
+   },
+   {
+    "name": "Laporan",
+    "items": [
+     {
+      "code": "SCM-90",
+      "name": "Laporan Supply Chain",
+      "fn": "Akurasi forecast, OTIF, umur stok, akurasi stok.",
+      "links": [
+       "HC-13"
+      ],
+      "phase": "M2"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "code": "RND",
+  "name": "RnD",
+  "short": "RnD",
+  "color": "#A16207",
+  "self": false,
+  "masters": [
+   "Tahap proyek",
+   "Kriteria gate",
+   "Kategori produk"
+  ],
+  "docs": [
+   {
+    "prefix": "PRJ",
+    "name": "Proyek"
+   },
+   {
+    "prefix": "FML",
+    "name": "Formula"
+   },
+   {
+    "prefix": "ART",
+    "name": "Artwork"
+   },
+   {
+    "prefix": "REG",
+    "name": "Registrasi"
+   }
+  ],
+  "sends": {
+   "PRE": "Routing dan parameter proses",
+   "PRC": "PR bahan trial, artwork kemasan",
+   "FIN": "BOM untuk standard cost",
+   "GA": "Dokumen registrasi",
+   "QMS": "Draf spesifikasi, usulan perubahan, protokol stabilitas",
+   "SCM": "BOM untuk MRP, produk baru untuk forecast"
+  },
+  "groups": [
+   {
+    "name": "Proyek",
+    "items": [
+     {
+      "code": "RND-02",
+      "name": "Proyek Pengembangan Produk",
+      "fn": "Ide \u2192 formula \u2192 trial \u2192 scale-up \u2192 registrasi \u2192 peluncuran, dengan gate approval.",
+      "links": [
+       "SCM-03"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "Formula & Trial",
+    "items": [
+     {
+      "code": "RND-03",
+      "name": "Master Formula & Versi",
+      "fn": "Komposisi per versi dan bahan pengganti yang diizinkan.",
+      "links": [
+       "QMS-03",
+       "RND-04"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "RND-04",
+      "name": "BOM & Routing Produksi",
+      "fn": "BOM per ukuran batch, tahap proses, parameter, waktu standar.",
+      "links": [
+       "SCM-05",
+       "PRE-06",
+       "FIN-52"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "RND-05",
+      "name": "Permintaan Bahan Trial",
+      "fn": "Minta dari gudang atau beli sampel.",
+      "links": [
+       "SCM-29",
+       "PRC-02"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "RND-06",
+      "name": "Trial Lab & Scale-up",
+      "fn": "Catatan trial, hasil, keputusan lanjut atau tidak.",
+      "links": [
+       "QMS-10"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "Spesifikasi & Regulasi",
+    "items": [
+     {
+      "code": "RND-07",
+      "name": "Draf Spesifikasi",
+      "fn": "Parameter dan batas untuk diserahkan ke QC.",
+      "links": [
+       "QMS-20"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "RND-08",
+      "name": "Studi Stabilitas Pengembangan",
+      "fn": "Protokol dan hasil awal.",
+      "links": [
+       "QMS-27"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "RND-09",
+      "name": "Registrasi Produk",
+      "fn": "Dokumen registrasi, izin edar, halal, masa berlaku.",
+      "links": [
+       "GA-09",
+       "QMS-13"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "Kemasan & Master",
+    "items": [
+     {
+      "code": "RND-10",
+      "name": "Desain Kemasan & Artwork",
+      "fn": "Versi artwork dan approval QA.",
+      "links": [
+       "SYS-06",
+       "PRC-02"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "RND-11",
+      "name": "Pengajuan Item Baru",
+      "fn": "Ajukan kode item baru ke Inventory Control.",
+      "links": [
+       "SYS-06"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "Biaya & Perubahan",
+    "items": [
+     {
+      "code": "RND-12",
+      "name": "Estimasi Biaya Formula",
+      "fn": "HPP perkiraan dari harga kontrak dan tarif overhead.",
+      "links": [
+       "PRC-08",
+       "FIN-52"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "RND-13",
+      "name": "Bank Data Bahan",
+      "fn": "Monografi bahan, sumber, literatur.",
+      "links": [
+       "RND-03"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "RND-14",
+      "name": "Usulan Perubahan Formula/Proses",
+      "fn": "Diajukan ke Change Control.",
+      "links": [
+       "QMS-03"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "Laporan",
+    "items": [
+     {
+      "code": "RND-90",
+      "name": "Laporan RnD",
+      "fn": "Durasi per tahap dan tingkat keberhasilan trial.",
+      "links": [
+       "HC-13"
+      ],
+      "phase": "M3"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "code": "ESS",
+  "name": "Layanan Saya",
+  "short": "Layanan Saya",
+  "color": "#3F3F46",
+  "self": true,
+  "masters": [
+   "Pintasan di beranda",
+   "Tanda tangan elektronik"
+  ],
+  "docs": [
+   {
+    "prefix": "REQ",
+    "name": "Permintaan Layanan"
+   },
+   {
+    "prefix": "LV",
+    "name": "Cuti & Izin"
+   },
+   {
+    "prefix": "OT",
+    "name": "Lembur"
+   },
+   {
+    "prefix": "SPD",
+    "name": "Perjalanan Dinas"
+   }
+  ],
+  "sends": {},
+  "groups": [
+   {
+    "name": "Waktu & Gaji",
+    "items": [
+     {
+      "code": "ESS-01",
+      "name": "Cuti & Izin",
+      "fn": "Ajukan cuti atau izin dan lihat sisa cuti.",
+      "links": [
+       "HC-08"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "ESS-02",
+      "name": "Lembur",
+      "fn": "Ajukan lembur sebelum dikerjakan.",
+      "links": [
+       "HC-08"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "ESS-03",
+      "name": "Slip Gaji",
+      "fn": "Lihat dan unduh slip gaji per bulan.",
+      "links": [
+       "HC-09"
+      ],
+      "phase": "M1"
+     },
+     {
+      "code": "ESS-09",
+      "name": "Perjalanan Dinas",
+      "fn": "SPD, uang muka, pertanggungjawaban.",
+      "links": [
+       "HC-08",
+       "GA-12",
+       "FIN-30"
+      ],
+      "phase": "M1"
+     }
+    ]
+   },
+   {
+    "name": "Permintaan",
+    "items": [
+     {
+      "code": "ESS-04",
+      "name": "Permintaan Pembelian",
+      "fn": "PR untuk kebutuhan departemen.",
+      "links": [
+       "PRC-02",
+       "FIN-51"
+      ],
+      "phase": "M2"
+     },
+     {
+      "code": "ESS-05",
+      "name": "Permintaan ATK",
+      "fn": "ATK dan konsumabel kantor.",
+      "links": [
+       "GA-03"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "ESS-06",
+      "name": "Booking Ruang Rapat",
+      "fn": "Pilih ruang dan jam.",
+      "links": [
+       "GA-05"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "ESS-07",
+      "name": "Booking Kendaraan",
+      "fn": "Kendaraan operasional.",
+      "links": [
+       "GA-04"
+      ],
+      "phase": "M3"
+     },
+     {
+      "code": "ESS-08",
+      "name": "Lapor Kerusakan",
+      "fn": "Mesin produksi atau fasilitas gedung.",
+      "links": [
+       "PRE-22",
+       "GA-06"
+      ],
+      "phase": "M3"
+     }
+    ]
+   },
+   {
+    "name": "Approval",
+    "items": [
+     {
+      "code": "ESS-10",
+      "name": "Kotak Approval Saya",
+      "fn": "Semua dokumen yang menunggu keputusan Anda.",
+      "links": [
+       "SYS-04"
+      ],
+      "phase": "M0"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "code": "QMS",
+  "name": "Sistem Mutu",
+  "short": "Sistem Mutu",
+  "color": "#0284C7",
+  "self": false,
+  "masters": [
+   "SOP",
+   "Formulir"
+  ],
+  "docs": [
+   {
+    "prefix": "CC",
+    "name": "Change Control"
+   },
+   {
+    "prefix": "DEV",
+    "name": "Deviasi"
+   },
+   {
+    "prefix": "CAPA",
+    "name": "CAPA"
+   },
+   {
+    "prefix": "CMP",
+    "name": "Keluhan"
+   },
+   {
+    "prefix": "BRL",
+    "name": "Pelulusan Batch"
+   },
+   {
+    "prefix": "STB",
+    "name": "Stabilitas"
+   }
+  ],
+  "sends": {
+   "SCM": "Status karantina/rilis stok"
+  },
+  "groups": [
+   {
+    "name": "QA & Compliance",
+    "items": [
+     {
+      "code": "QMS-01",
+      "name": "Dokumen Mutu",
+      "fn": "SOP, formulir, spesifikasi, dan panduan mutu.",
+      "links": []
+     },
+     {
+      "code": "QMS-02",
+      "name": "Change Control",
+      "fn": "Usulan, dampak, dan persetujuan perubahan.",
+      "links": []
+     },
+     {
+      "code": "QMS-03",
+      "name": "Deviasi",
+      "fn": "Penyimpangan, klasifikasi, dan akar masalah.",
+      "links": []
+     },
+     {
+      "code": "QMS-04",
+      "name": "CAPA",
+      "fn": "Tindakan perbaikan dan pencegahan.",
+      "links": []
+     },
+     {
+      "code": "QMS-05",
+      "name": "Keluhan & Recall",
+      "fn": "Keluhan pelanggan dan penarikan produk.",
+      "links": []
+     },
+     {
+      "code": "QMS-06",
+      "name": "Audit Internal & Eksternal",
+      "fn": "Jadwal, temuan, dan tindak lanjut audit.",
+      "links": [
+       "SYS-14"
+      ]
+     },
+     {
+      "code": "QMS-07",
+      "name": "Manajemen Risiko Mutu",
+      "fn": "Identifikasi, analisis, dan mitigasi risiko.",
+      "links": [
+       "SYS-14"
+      ]
+     }
+    ]
+   },
+   {
+    "name": "Pengawasan Mutu (QC)",
+    "items": [
+     {
+      "code": "QMS-08",
+      "name": "Spesifikasi & Metode Uji",
+      "fn": "Standar rujukan, spesifikasi bahan/produk.",
+      "links": []
+     },
+     {
+      "code": "QMS-09",
+      "name": "Pelulusan Batch",
+      "fn": "Review dokumen produksi sebelum rilis.",
+      "links": [
+       "FIN-44"
+      ]
+     },
+     {
+      "code": "QMS-10",
+      "name": "Pengambilan Sampel",
+      "fn": "Rencana dan jadwal sampling.",
+      "links": []
+     },
+     {
+      "code": "QMS-11",
+      "name": "Hasil Pengujian",
+      "fn": "Catatan analisis QC dan out-of-specification (OOS).",
+      "links": []
+     },
+     {
+      "code": "QMS-12",
+      "name": "Review IPC",
+      "fn": "Hasil in-process control dari tim produksi.",
+      "links": []
+     },
+     {
+      "code": "QMS-13",
+      "name": "Certificate of Analysis (CoA)",
+      "fn": "Cetak dan persetujuan CoA.",
+      "links": []
+     },
+     {
+      "code": "QMS-14",
+      "name": "Instrumen & Kalibrasi",
+      "fn": "Status alat uji dan jadwal kalibrasi.",
+      "links": []
+     },
+     {
+      "code": "QMS-15",
+      "name": "Uji Stabilitas",
+      "fn": "Desain dan hasil studi stabilitas.",
+      "links": []
+     }
+    ]
+   }
+  ],
+  "kpis": [
+   [
+    "Outstanding CAPA",
+    3,
+    "QMS-04"
+   ],
+   [
+    "Deviasi Mayor/Kritis",
+    1,
+    "QMS-03"
+   ],
+   [
+    "OOS Bulan Ini",
+    2,
+    "QMS-11"
+   ],
+   [
+    "Keluhan Pelanggan",
+    0,
+    "QMS-05"
+   ]
+  ],
+  "queue": [
+   [
+    "DEV/P1/2610/00009",
+    "IPC berat kapsul di luar batas",
+    "Diajukan",
+    "Investigasi awal (Tim Produksi)",
+    "QMS-04"
+   ],
+   [
+    "BRL/P1/2610/00031",
+    "Amoxicillin 500mg Batch A123",
+    "Draft",
+    "Menunggu hasil lab QC",
+    "QMS-09"
+   ]
+  ]
+ },
+ {
+  "code": "SYS",
+  "name": "Pengaturan Sistem",
+  "short": "Sistem",
+  "color": "#3F3F46",
+  "self": true,
+  "masters": [
+   "Parameter global",
+   "Kebijakan kata sandi",
+   "Jadwal backup"
+  ],
+  "docs": [
+   {
+    "prefix": "USR",
+    "name": "Pengguna"
+   },
+   {
+    "prefix": "ROLE",
+    "name": "Peran"
+   },
+   {
+    "prefix": "APR",
+    "name": "Aturan Approval"
+   },
+   {
+    "prefix": "INT",
+    "name": "Log Integrasi"
+   }
+  ],
+  "sends": {},
+  "groups": [
+   {
+    "name": "Organisasi & Akses",
+    "items": [
+     {
+      "code": "SYS-01",
+      "name": "Perusahaan, Plant & Site",
+      "fn": "Entitas, plant, alamat, NPWP.",
+      "links": [
+       "FIN-02"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "SYS-02",
+      "name": "Struktur Organisasi & Cost Center",
+      "fn": "Departemen, seksi, dan cost center.",
+      "links": [
+       "HC-02",
+       "FIN-02"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "SYS-03",
+      "name": "Pengguna, Peran & Hak Akses",
+      "fn": "Akses per menu \u00d7 aksi \u00d7 plant.",
+      "links": [
+       "HC-05"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "SYS-04",
+      "name": "Matriks Approval",
+      "fn": "Aturan approval per dokumen, nilai, departemen.",
+      "links": [
+       "HC-02"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "SYS-05",
+      "name": "Penomoran Dokumen",
+      "fn": "Format nomor dan reset per dokumen.",
+      "links": [],
+      "phase": "M0"
+     }
+    ]
+   },
+   {
+    "name": "Master Data",
+    "items": [
+     {
+      "code": "SYS-06",
+      "name": "Item Master",
+      "fn": "Bahan baku, kemasan, WIP, barang jadi, sparepart, ATK, jasa.",
+      "links": [
+       "RND-11",
+       "SCM-43"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "SYS-07",
+      "name": "Satuan & Konversi",
+      "fn": "UoM dan faktor konversi.",
+      "links": [],
+      "phase": "M0"
+     },
+     {
+      "code": "SYS-08",
+      "name": "Mitra Bisnis",
+      "fn": "Supplier, customer, ekspedisi.",
+      "links": [
+       "PRC-03",
+       "FIN-22"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "SYS-09",
+      "name": "Gudang, Zona & Lokasi Bin",
+      "fn": "Struktur gudang dan lokasi penyimpanan.",
+      "links": [
+       "SCM-22"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "SYS-10",
+      "name": "Kalender Kerja & Shift",
+      "fn": "Hari kerja, libur, pola shift.",
+      "links": [
+       "HC-07",
+       "SCM-06"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "SYS-11",
+      "name": "Mata Uang & Kurs",
+      "fn": "Kurs harian dan kurs pajak.",
+      "links": [
+       "PRC-10"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "SYS-12",
+      "name": "Kode Pajak",
+      "fn": "PPN dan PPh.",
+      "links": [
+       "FIN-60",
+       "FIN-61"
+      ],
+      "phase": "M0"
+     }
+    ]
+   },
+   {
+    "name": "Integrasi & Audit",
+    "items": [
+     {
+      "code": "SYS-13",
+      "name": "Integrasi & Log API",
+      "fn": "HRIS, BSC, Odoo, mesin absensi, timbangan.",
+      "links": [
+       "HC-13",
+       "FIN-72"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "SYS-14",
+      "name": "Audit Trail Global",
+      "fn": "Siapa, kapan, nilai lama dan baru, alasan.",
+      "links": [
+       "QMS-07"
+      ],
+      "phase": "M0"
+     },
+     {
+      "code": "SYS-15",
+      "name": "Template, Notifikasi & Email",
+      "fn": "Template cetak dan pesan notifikasi.",
+      "links": [],
+      "phase": "M0"
+     }
+    ]
+   }
+  ]
+ }
+]

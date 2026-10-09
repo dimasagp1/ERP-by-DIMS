@@ -1,0 +1,6 @@
+kode_item,nama_item,nomor_lot,tanggal_kedaluwarsa,kode_gudang,kode_lokasi_bin,qty,satuan,status_lot
+RM-001,Ekstrak Temulawak Terstandar,LT-202610-01,2028-10-09,WH-RM,BIN-A1-01,500.000,KG,RELEASED
+RM-002,Simplisia Meniran Kering,LT-202610-02,2028-06-30,WH-RM,BIN-A1-02,1250.000,KG,RELEASED
+PM-001,Botol HDPE Putih 100ml,LOT-PM-001,2029-12-31,WH-PM,BIN-B2-05,15000.000,PCS,RELEASED
+PM-002,Tutup Botol Segel Induksi,LOT-PM-002,2029-12-31,WH-PM,BIN-B2-06,15000.000,PCS,RELEASED
+FG-001,Kapsul Curcuma 500mg (Isi 60),FG-202610-99,2028-10-01,WH-FG,BIN-FG-01,4200.000,BTL,RELEASED

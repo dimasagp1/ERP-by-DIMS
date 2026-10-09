@@ -267,4 +267,71 @@ export const sarmutInputDoc: DocConfig = {
   defaults: { period: thisPeriod() },
 };
 
+// ---------------------------------------------------------------- HC Phase 3: Rekrutmen, Training, Disiplin
+
+export const recruitmentDoc: DocConfig = {
+  docType: 'RECR',
+  title: 'Permintaan Tenaga Kerja (MPP)',
+  endpoint: '/hc/recruitments',
+  listColumns: [
+    DOCNO_COL,
+    { key: 'headcountNeeded', label: 'Kebutuhan', type: 'number' },
+    { key: 'targetDate', label: 'Target Terisi', type: 'date' },
+    STATUS_COL,
+  ],
+  header: [
+    { key: 'positionId', label: 'Jabatan / Posisi', type: 'lookup', lookup: 'positions', required: true },
+    { key: 'headcountNeeded', label: 'Jumlah Orang yang Dibutuhkan', type: 'number', required: true },
+    { key: 'targetDate', label: 'Target Tanggal Masuk Kerja', type: 'date', required: true },
+    { key: 'justification', label: 'Alasan Penambahan / Penggantian Karyawan', type: 'textarea', required: true },
+  ],
+};
+
+export const trainingDoc: DocConfig = {
+  docType: 'TRN',
+  title: 'Pelatihan & Training Karyawan',
+  endpoint: '/hc/trainings',
+  listColumns: [
+    DOCNO_COL,
+    { key: 'topic', label: 'Topik Pelatihan' },
+    { key: 'trainingDate', label: 'Tanggal', type: 'date' },
+    STATUS_COL,
+  ],
+  header: [
+    { key: 'topic', label: 'Materi / Topik Pelatihan', required: true },
+    { key: 'trainer', label: 'Instruktur / Lembaga Trainer' },
+    { key: 'trainingDate', label: 'Tanggal Pelaksanaan', type: 'date', required: true },
+    { key: 'durationHours', label: 'Durasi (Jam)', type: 'number' },
+    { key: 'qualificationId', label: 'Kualifikasi Terkait (HC-12)', type: 'lookup', lookup: 'qualifications' },
+    { key: 'attendeesSummary', label: 'Daftar Peserta / Catatan Evaluasi Post-test', type: 'textarea' },
+  ],
+};
+
+export const disciplineDoc: DocConfig = {
+  docType: 'SP',
+  title: 'Tindakan Disiplin & Sanksi',
+  endpoint: '/hc/disciplines',
+  listColumns: [
+    DOCNO_COL,
+    { key: 'actionLevel', label: 'Tingkat Sanksi' },
+    { key: 'incidentDate', label: 'Tgl Pelanggaran', type: 'date' },
+    STATUS_COL,
+  ],
+  header: [
+    { key: 'employeeId', label: 'Karyawan yang Bersangkutan', type: 'lookup', lookup: 'employees', required: true },
+    { key: 'actionLevel', label: 'Bentuk Sanksi', type: 'select', options: [
+      { value: 'TEGURAN', label: 'Surat Teguran Lisan/Tertulis' },
+      { value: 'SP1', label: 'Surat Peringatan I (SP 1)' },
+      { value: 'SP2', label: 'Surat Peringatan II (SP 2)' },
+      { value: 'SP3', label: 'Surat Peringatan III (SP 3 / Terakhir)' },
+      { value: 'PHK', label: 'Pemutusan Hubungan Kerja (PHK)' },
+    ], required: true },
+    { key: 'incidentDate', label: 'Tanggal Kejadian Pelanggaran', type: 'date', required: true },
+    { key: 'violationClause', label: 'Pasal Peraturan Perusahaan / PKB' },
+    { key: 'validUntil', label: 'Masa Berlaku Sanksi (Bulan/Tanggal)', type: 'date' },
+    { key: 'description', label: 'Uraian Pelanggaran & Berita Acara', type: 'textarea', required: true },
+  ],
+};
+
 export type { Doc };
+

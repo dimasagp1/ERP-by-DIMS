@@ -1,0 +1,8 @@
+nik,nama_lengkap,email,kode_departemen,jabatan,plant,tanggal_masuk,gaji_pokok,status_kerja
+E0001,Dimas Pratama,dimas@herbatech.co.id,SYS,Direktur Utama,Plant 1 Cikarang,2022-01-01,35000000,TETAP
+E0010,Sri Wahyuni,sri.fin@herbatech.co.id,FIN,Manager Keuangan,Plant 1 Cikarang,2023-03-15,18500000,TETAP
+E0020,Rian Hidayat,rian.prc@herbatech.co.id,PRC,Manager Pengadaan,Plant 1 Cikarang,2023-05-01,17500000,TETAP
+E0030,Hendro Wijaya,hendro.pre@herbatech.co.id,PRE,Manager Produksi,Plant 1 Cikarang,2022-06-01,19000000,TETAP
+E0040,Dewi Lestari,dewi.qa@herbatech.co.id,QMS,Manager Penjamin Mutu,Plant 1 Cikarang,2022-04-10,18000000,TETAP
+E0050,Budi Santoso,budi.scm@herbatech.co.id,SCM,Manager Rantai Pasok,Plant 1 Cikarang,2022-08-01,18000000,TETAP
+E0080,Rina Kartika,rina.rnd@herbatech.co.id,RND,Manager Riset & Formulasi,Plant 1 Cikarang,2023-01-15,18500000,TETAP

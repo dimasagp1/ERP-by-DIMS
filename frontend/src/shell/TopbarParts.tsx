@@ -7,6 +7,7 @@ import { useAuth } from '../auth/AuthContext';
 import { Icon } from '../components/icons';
 import { useClickOutside, useToast } from '../components/ui';
 import { fmtDateTime } from '../lib/format';
+import { ManageUsersModal } from '../components/ManageUsersModal';
 
 /** Lonceng navbar (PRD §13): notifikasi approval, penolakan, pengingat, eskalasi. */
 export function NotificationBell() {
@@ -88,30 +89,123 @@ export function PlantSwitcher() {
 export function ProfileMenu() {
   const { me, logout } = useAuth();
   const [open, setOpen] = useState(false);
+  const [usersOpen, setUsersOpen] = useState(false);
   const ref = useClickOutside<HTMLDivElement>(() => setOpen(false));
   const nav = useNavigate();
   const toast = useToast();
   if (!me) return null;
   const initial = me.fullName.trim().charAt(0).toUpperCase();
+
+  const isDark = typeof document !== 'undefined' && document.documentElement.dataset.theme === 'dark';
+  const toggleTheme = () => {
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try {
+      localStorage.setItem('erp.theme', next);
+    } catch {
+      /* ignore */
+    }
+    setOpen(false);
+  };
+
   return (
-    <div ref={ref} style={{ position: 'relative' }}>
-      <button className="iconbtn" type="button" aria-label="Profil" onClick={() => setOpen(!open)}>
-        <span style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 600, color: 'var(--text)' }}>{initial}</span>
-      </button>
-      {open && (
-        <div className="pop" style={{ right: 0, top: 42, width: 280 }}>
-          <div style={{ padding: '8px 10px 10px', borderBottom: '1px solid var(--line-soft)', marginBottom: 4 }}>
-            <div style={{ fontWeight: 600 }}>{me.fullName}</div>
-            <div className="mono small muted">{me.username}</div>
-            <div className="small muted" style={{ marginTop: 4 }}>
-              {me.grants.map((g) => `${g.roleName} · ${g.app === '*' ? 'Semua aplikasi' : g.app}`).join(', ') || 'Karyawan'}
+    <>
+      <div ref={ref} style={{ position: 'relative' }}>
+        <button
+          className="iconbtn"
+          type="button"
+          aria-label="Profil Pengguna"
+          title={`Profil: ${me.fullName}`}
+          onClick={() => setOpen(!open)}
+          style={{ padding: 2 }}
+        >
+          <span
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: '50%',
+              background: '#DC2626',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 13,
+              fontWeight: 700,
+              color: '#FFFFFF',
+              boxShadow: '0 2px 5px rgba(220, 38, 38, 0.35)',
+            }}
+          >
+            {initial}
+          </span>
+        </button>
+        {open && (
+          <div className="pop" style={{ right: 0, top: 42, width: 280 }}>
+            <div style={{ padding: '8px 10px 10px', borderBottom: '1px solid var(--line-soft)', marginBottom: 4 }}>
+              <div style={{ fontWeight: 600 }}>{me.fullName}</div>
+              <div className="mono small muted">{me.username}</div>
+              <div className="small muted" style={{ marginTop: 4 }}>
+                {me.grants.map((g) => `${g.roleName} · ${g.app === '*' ? 'Semua aplikasi' : g.app}`).join(', ') || 'Karyawan'}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className="ddi"
+              onClick={toggleTheme}
+            >
+              {isDark ? '☀️ Beralih ke Mode Terang' : '🌙 Beralih ke Mode Gelap'}
+            </button>
+
+            <button
+              type="button"
+              className="ddi"
+              onClick={() => {
+                setOpen(false);
+                setUsersOpen(true);
+              }}
+            >
+              👥 Kelola Pengguna (Manage Users)
+            </button>
+
+            <button
+              type="button"
+              className="ddi"
+              onClick={() => {
+                setOpen(false);
+                nav('/app/ESS/settings?cat=pref');
+              }}
+            >
+              ⚙️ Preferensi saya
+            </button>
+            <button
+              type="button"
+              className="ddi"
+              onClick={() => {
+                setOpen(false);
+                nav('/app/ESS/settings?cat=password');
+              }}
+            >
+              🔑 Ganti kata sandi
+            </button>
+            <div style={{ borderTop: '1px solid var(--line-soft)', marginTop: 4, paddingTop: 4 }}>
+              <button
+                type="button"
+                className="ddi"
+                style={{ color: 'var(--danger)' }}
+                onClick={() => {
+                  setOpen(false);
+                  logout();
+                  toast.ok('Anda telah keluar');
+                  nav('/login');
+                }}
+              >
+                🚪 Keluar
+              </button>
             </div>
           </div>
-          <button type="button" className="ddi" onClick={() => { setOpen(false); nav('/app/ESS/settings?cat=pref'); }}>Preferensi saya</button>
-          <button type="button" className="ddi" onClick={() => { setOpen(false); nav('/app/ESS/settings?cat=password'); }}>Ganti kata sandi</button>
-          <button type="button" className="ddi" onClick={() => { setOpen(false); logout(); toast.ok('Anda telah keluar'); nav('/login'); }}>Keluar</button>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+
+      {usersOpen && <ManageUsersModal open={usersOpen} onClose={() => setUsersOpen(false)} />}
+    </>
   );
 }

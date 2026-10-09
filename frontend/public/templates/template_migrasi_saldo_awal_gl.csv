@@ -1,0 +1,8 @@
+kode_akun,nama_akun,saldo_debit,saldo_kredit,cost_center,keterangan
+1110.01,Kas Kecil Plant 1,15000000,0,CC-PRE-01,Saldo awal kas kecil operasional pabrik
+1120.01,Bank Mandiri Operasional,450000000,0,CC-FIN-01,Rekening giro operasional utama
+1130.01,Piutang Usaha Distributor Herbal,280000000,0,CC-FIN-01,Saldo piutang faktur berjalan
+1140.01,Persediaan Bahan Baku Simplisia,185000000,0,CC-SCM-01,Saldo fisik opname bahan baku
+1140.02,Persediaan Produk Jadi Kapsul,320000000,0,CC-SCM-01,Saldo fisik obat herbal siap jual
+2110.01,Hutang Dagang Pemasok Bahan Baku,0,145000000,CC-PRC-01,Hutang jatuh tempo bulan berjalan
+3110.01,Modal Disetor Perusahaan,0,1105000000,CC-FIN-01,Ekuitas awal perseroan
